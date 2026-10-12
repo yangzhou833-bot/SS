@@ -1,0 +1,11 @@
+{
+  "name": " Stellar 2 分支",
+  "description": "基于地图的定位聊天手机 App",
+  "requestFramePermissions": [
+    "geolocation",
+    "camera"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

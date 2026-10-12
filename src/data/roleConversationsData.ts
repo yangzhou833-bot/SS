@@ -1,0 +1,866 @@
+import { ChatConversation } from '../types';
+import { INITIAL_CHATS } from './mockData';
+
+// Role-specific Conversation Datasets
+export const ROLE_CONVERSATIONS_MAP: Record<string, ChatConversation[]> = {
+  // 1. 默认主号 / 城市探索者 (Alex Mercer)
+  alex_explorer: INITIAL_CHATS,
+
+  // 2. 好友视角 · 密友/音乐制作人 (Liam)
+  friend_liam: [
+    {
+      id: 'c-liam-alex',
+      friendId: 'f-alex',
+      friendName: 'Alex Mercer (我/主号)',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '新歌混音已经导出完毕，发你听听！晚上东方红广场见 🎧',
+      time: '14:32',
+      unreadCount: 1,
+      isCloseFriend: true,
+      messages: [
+        { id: 'lm1', senderId: 'me', text: 'Alex！你的个人便签和新贴纸我都看到了，真酷！🔥', timestamp: '14:20', isMe: true },
+        { id: 'lm2', senderId: 'f-alex', text: '哈哈谢谢Liam！你那首新歌制作得怎么样了？', timestamp: '14:22', isMe: false },
+        { id: 'lm3', senderId: 'me', text: '刚刚把主音轨重新做了一遍低音侧链压缩，动感强多了！', timestamp: '14:25', isMe: true },
+        {
+          id: 'lm4',
+          senderId: 'me',
+          text: '发送了一个音频文件：Midnight_Echoes_Master_v3.mp3',
+          type: 'file',
+          fileData: { name: 'Midnight_Echoes_Master_v3.wav', size: '42.8 MB', type: 'audio' },
+          timestamp: '14:28',
+          isMe: true,
+        },
+        { id: 'lm5', senderId: 'f-alex', text: '太赞了，前奏的合成器音色好抓耳！晚上在老地方边喝咖啡边聊~', timestamp: '14:30', isMe: false },
+        { id: 'lm6', senderId: 'me', text: '新歌混音已经导出完毕，发你听听！晚上东方红广场见 🎧', timestamp: '14:32', isMe: true },
+      ],
+    },
+    {
+      id: 'c-liam-group-music',
+      friendId: 'grp-music',
+      friendName: '兰州独立音乐人先锋联盟 🎸',
+      avatar: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '周五Livehouse演出排期表与设备通道分配表已更新',
+      time: '13:45',
+      unreadCount: 3,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
+      ],
+      groupDetails: {
+        id: 'grp-music',
+        name: '兰州独立音乐人先锋联盟 🎸',
+        announcement: '本周末黄河风情线户外音乐季彩排：请各乐队于周五14:00到达葵Livehouse完成调音',
+        tags: ['音乐制作', 'Livehouse', '合成器', '演出调度'],
+        createdAt: '2026年3月',
+        adminName: 'Liam (音乐总监)',
+        memberCount: 16,
+        members: [
+          { id: 'm-liam', name: 'Liam', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150', role: '群主', isOnline: true },
+          { id: 'm-sarah', name: 'Sarah Chen', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150', role: '管理员', isOnline: true },
+          { id: 'm-alex', name: 'Alex Mercer', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150', role: '成员', isOnline: false },
+        ],
+      },
+      messages: [
+        { id: 'gm1', senderId: 'm-sarah', senderName: 'Sarah Chen', text: '这次舞台视觉设计做好了，结合了黄河铁桥的光影元素 🌃', timestamp: '12:10', isMe: false },
+        { id: 'gm2', senderId: 'me', text: '已收到视觉稿，音频工程里的灯光DMX时间码已匹配完成！', timestamp: '13:00', isMe: true },
+        { id: 'gm3', senderId: 'm-lucas', senderName: '吉他手阿泽', text: '周五Livehouse演出排期表与设备通道分配表已更新', timestamp: '13:45', isMe: false },
+      ],
+    },
+    {
+      id: 'c-liam-sarah',
+      friendId: 'f-sarah',
+      friendName: 'Sarah Chen (薛梦)',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '新单曲封面精修图已发你网盘，去看看效果如何~',
+      time: '11:20',
+      unreadCount: 0,
+      isCloseFriend: true,
+      messages: [
+        { id: 'liam-sm1', senderId: 'f-sarah', text: 'Liam，昨晚在黄河边抓拍的那组胶片洗出来了，非常有质感！', timestamp: '11:00', isMe: false },
+        { id: 'liam-sm2', senderId: 'me', text: '太棒了！正需要拿来当单曲的主视觉封面 🎵', timestamp: '11:15', isMe: true },
+        { id: 'liam-sm3', senderId: 'f-sarah', text: '新单曲封面精修图已发你网盘，去看看效果如何~', timestamp: '11:20', isMe: false },
+      ],
+    },
+  ],
+
+  // 3. 密友探索者 · 独立摄影师 (Sarah Chen)
+  friend_sarah: [
+    {
+      id: 'c-sarah-alex',
+      friendId: 'f-alex',
+      friendName: 'Alex Mercer (我/主号)',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '我在中山桥北岸架好机位了，日落蓝调时刻抓拍到了绝美延时！📸',
+      time: '14:26',
+      unreadCount: 2,
+      isCloseFriend: true,
+      messages: [
+        { id: 'sa1', senderId: 'f-alex', text: 'Sarah，你今天在哪个位置采风呢？', timestamp: '14:05', isMe: false },
+        { id: 'sa2', senderId: 'me', text: '我正在黄河铁桥旁边的观景台！今天光线特别透亮 ✨', timestamp: '14:10', isMe: true },
+        {
+          id: 'sa3',
+          senderId: 'me',
+          text: '分享了一张刚刚拍摄的长曝光照片',
+          type: 'image',
+          imageUrl: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800',
+          timestamp: '14:15',
+          isMe: true,
+        },
+        { id: 'sa4', senderId: 'f-alex', text: '色彩层次太惊艳了！水面的倒影光晕绝了', timestamp: '14:20', isMe: false },
+        { id: 'sa5', senderId: 'me', text: '我在中山桥北岸架好机位了，日落蓝调时刻抓拍到了绝美延时！📸', timestamp: '14:26', isMe: true },
+      ],
+    },
+    {
+      id: 'c-sarah-photo-club',
+      friendId: 'grp-photo',
+      friendName: '兰州光影纪实摄影社 📷',
+      avatar: 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '本周六白塔山晨光俯拍外拍名额还剩最后2席',
+      time: '12:30',
+      unreadCount: 0,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'pc1', senderId: 'admin', senderName: '社长老陈', text: '本周六白塔山晨光俯拍外拍名额还剩最后2席', timestamp: '12:30', isMe: false },
+      ],
+    },
+    {
+      id: 'c-sarah-liam',
+      friendId: 'f-liam',
+      friendName: 'Liam (音乐制作人)',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '封面挑好了，第二张光影氛围和EP主打歌最搭！',
+      time: '11:45',
+      unreadCount: 0,
+      messages: [
+        { id: 'sl1', senderId: 'f-liam', text: '封面挑好了，第二张光影氛围和EP主打歌最搭！', timestamp: '11:45', isMe: false },
+      ],
+    },
+  ],
+
+  // 4. 高校教学体系 · 领航员 / 任课教师 (张立华 教授)
+  instructor: [
+    {
+      id: 'c-ins-course-2401',
+      friendId: 'grp-adv-algo',
+      friendName: '计科2401《高级算法与AI》教学研讨群 🎓',
+      avatar: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '张教授：请同学们提前配置好PyTorch实验环境，明天上午电子考勤准时开启',
+      time: '15:10',
+      unreadCount: 4,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+      ],
+      groupDetails: {
+        id: 'grp-adv-algo',
+        name: '计科2401《高级算法与AI》教学研讨群 🎓',
+        announcement: '课程公告：第4周实验报告截止时间为周日24:00。空间微围栏考勤将在计算机楼302教室准时点亮。',
+        tags: ['高级算法', 'AI实训', '电子考勤', '课业答疑'],
+        createdAt: '2026年2月',
+        adminName: '张立华 教授',
+        memberCount: 35,
+        members: [
+          { id: 'm-zhang', name: '张立华 教授', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150', role: '群主', isOnline: true },
+          { id: 'm-wang-ta', name: '王助教', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150', role: '管理员', isOnline: true },
+          { id: 'm-zhao-mon', name: '赵班长', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150', role: '成员', isOnline: true },
+        ],
+      },
+      messages: [
+        { id: 'tc1', senderId: 'me', text: '各位同学，第4章动态规划与强化学习课件已上传至教务系统 📚', timestamp: '14:30', isMe: true },
+        { id: 'tc2', senderId: 'm-zhao-mon', senderName: '赵班长', text: '收到张教授！班级32名同学已全部下载课件并完成预习打卡。', timestamp: '14:35', isMe: false },
+        { id: 'tc3', senderId: 'm-wang-ta', senderName: '王助教', text: '实验机房服务器端口已映射完毕，支持Jupyter远程连接。', timestamp: '14:50', isMe: false },
+        { id: 'tc4', senderId: 'me', text: '张教授：请同学们提前配置好PyTorch实验环境，明天上午电子考勤准时开启', timestamp: '15:10', isMe: true },
+      ],
+    },
+    {
+      id: 'c-ins-ta-wang',
+      friendId: 'f-ta-wang',
+      friendName: '王助教 (副领航员)',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '张老师，上周缺勤与请假学生复核名单已整理汇总完毕，发您查阅。',
+      time: '14:40',
+      unreadCount: 1,
+      isCloseFriend: true,
+      messages: [
+        { id: 'iw1', senderId: 'me', text: '小王，上周三节课有两名同学请假，假条凭证和医院证明审核过了吗？', timestamp: '14:15', isMe: true },
+        { id: 'iw2', senderId: 'f-ta-wang', text: '张老师，均已在系统完成凭据核查，一名同学因急性肠胃炎请假两天，手续合规。', timestamp: '14:20', isMe: false },
+        {
+          id: 'iw3',
+          senderId: 'f-ta-wang',
+          text: '发送了文档：2026秋季学期_计科2401出勤与假条审核表.xlsx',
+          type: 'file',
+          fileData: { name: '2026秋季学期_计科2401出勤与假条审核表.xlsx', size: '1.2 MB' },
+          timestamp: '14:35',
+          isMe: false,
+        },
+        { id: 'iw4', senderId: 'f-ta-wang', text: '张老师，上周缺勤与请假学生复核名单已整理汇总完毕，发您查阅。', timestamp: '14:40', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-adviser-li',
+      friendId: 'f-adv-li',
+      friendName: '李辅导员 (星区守护者)',
+      avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '张教授，关于2024级学风建设与期中出勤预警联动机制方案已拟定。',
+      time: '11:15',
+      unreadCount: 0,
+      messages: [
+        { id: 'il1', senderId: 'f-adv-li', text: '张教授好！本学期全院到课率榜单中，您的《高级算法》出勤率名列前茅！', timestamp: '11:00', isMe: false },
+        { id: 'il2', senderId: 'me', text: '感谢学工办支持，50米空间微围栏打卡非常方便，学生体验很积极。', timestamp: '11:10', isMe: true },
+        { id: 'il3', senderId: 'f-adv-li', text: '张教授，关于2024级学风建设与期中出勤预警联动机制方案已拟定。', timestamp: '11:15', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-student-chen',
+      friendId: 'f-stu-chen',
+      friendName: '陈星航 (选课学生)',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '谢谢张老师的指点！我按照您说的剪枝策略优化后，算法运行时间缩短了70%！',
+      time: '09:40',
+      unreadCount: 0,
+      messages: [
+        { id: 'ic1', senderId: 'f-stu-chen', text: '张老师好！请教一下关于A*搜索算法中启发式函数的单调性证明问题...', timestamp: '09:20', isMe: false },
+        { id: 'ic2', senderId: 'me', text: '星航同学，你可以从一致性启发函数的三角不等式推导入手，参考课件第38页。', timestamp: '09:30', isMe: true },
+        { id: 'ic3', senderId: 'f-stu-chen', text: '谢谢张老师的指点！我按照您说的剪枝策略优化后，算法运行时间缩短了70%！', timestamp: '09:40', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-team-ai-lab',
+      friendId: 'grp-ai-lab',
+      friendName: '空间智能感知与认知计算实验室 🔬',
+      avatar: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '周博士：最新多模态时空微围栏的评测报告已输出，准确率提升至98.4%',
+      time: '15:45',
+      unreadCount: 2,
+      isTeam: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
+      ],
+      groupDetails: {
+        id: 'grp-ai-lab',
+        name: '空间智能感知与认知计算实验室 🔬',
+        announcement: '实验室组会每周五下午15:00在计算机楼412举行，请准备NeurIPS投稿长文的同学准时参加。',
+        tags: ['空间智能', '微围栏', '高精度定位', '学术前沿'],
+        createdAt: '2025年9月',
+        adminName: '张立华 教授',
+        memberCount: 18,
+        members: [
+          { id: 'm-zhang', name: '张立华 教授', avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150', role: '群主', isOnline: true },
+          { id: 'm-zhou-phd', name: '周博士', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150', role: '管理员', isOnline: true },
+          { id: 'm-wang-ta', name: '王助教', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150', role: '成员', isOnline: true },
+        ],
+      },
+      messages: [
+        { id: 'lab-m1', senderId: 'me', text: '周博士，新采购的8卡H100计算集群环境镜像调试通过了吗？', timestamp: '15:10', isMe: true },
+        { id: 'lab-m2', senderId: 'm-zhou-phd', senderName: '周博士', text: '张老师，Slurm作业调度和CUDA 12.4驱动已完成基准测试，浮点算力正常！', timestamp: '15:25', isMe: false },
+        { id: 'lab-m3', senderId: 'm-zhou-phd', senderName: '周博士', text: '最新多模态时空微围栏的评测报告已输出，准确率提升至98.4%', timestamp: '15:45', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-faculty-cs',
+      friendId: 'grp-faculty-cs',
+      friendName: '计算机学院教学指导委员会 🏛️',
+      avatar: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '刘院长：请各位委员于周三下午2:30到学术报告厅参加新培养方案评审会',
+      time: '14:10',
+      unreadCount: 3,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'fac-m1', senderId: 'f-dean-liu', senderName: '刘院长', text: '本学期人工智能与空间感知交叉方向的微专业申报进展顺利。', timestamp: '13:50', isMe: false },
+        { id: 'fac-m2', senderId: 'me', text: '我们教研室已把《边缘智能计算实训》的教学大纲与实验手册整理齐全。', timestamp: '14:02', isMe: true },
+        { id: 'fac-m3', senderId: 'f-dean-liu', senderName: '刘院长', text: '刘院长：请各位委员于周三下午2:30到学术报告厅参加新培养方案评审会', timestamp: '14:10', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-prof-zhou',
+      friendId: 'f-prof-zhou',
+      friendName: '周海林 教授 (教研室主任)',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '立华，科技部重大专项申报书草案我已批注，重点突出边缘空间智能计算部分。',
+      time: '12:45',
+      unreadCount: 1,
+      messages: [
+        { id: 'pz1', senderId: 'f-prof-zhou', text: '立华，国家重点研发计划的项目立项指南刚刚挂网公示了。', timestamp: '12:20', isMe: false },
+        { id: 'pz2', senderId: 'me', text: '周老师，我和实验室骨干正在凝练申报书中的技术路线图。', timestamp: '12:35', isMe: true },
+        { id: 'pz3', senderId: 'f-prof-zhou', text: '立华，科技部重大专项申报书草案我已批注，重点突出边缘空间智能计算部分。', timestamp: '12:45', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-student-lin',
+      friendId: 'f-stu-lin',
+      friendName: '林可儿 (卓越班班长)',
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '张老师，全班同学对上周的启发式算法动态沙盘评价特别高！',
+      time: '11:50',
+      unreadCount: 0,
+      isCloseFriend: true,
+      messages: [
+        { id: 'lin1', senderId: 'f-stu-lin', text: '张老师好！收集了大家对第3章课后大作业的反馈，总体感觉挑战度很棒。', timestamp: '11:30', isMe: false },
+        { id: 'lin2', senderId: 'me', text: '好的可儿，周四上课前我会专门安排15分钟进行高频难点代码剖析。', timestamp: '11:42', isMe: true },
+        { id: 'lin3', senderId: 'f-stu-lin', text: '张老师，全班同学对上周的启发式算法动态沙盘评价特别高！', timestamp: '11:50', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-team-hackathon',
+      friendId: 'grp-hackathon',
+      friendName: '2026高校空间算法挑战赛战队 🏆',
+      avatar: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '队长：初赛排行榜更新了，我们队目前位列全国高校第3名！🚀',
+      time: '10:35',
+      unreadCount: 5,
+      isTeam: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'hk1', senderId: 'm-capt', senderName: '陈星航', text: '张老师，我们的多目标路径规划算法提交了第4次评测！', timestamp: '10:15', isMe: false },
+        { id: 'hk2', senderId: 'me', text: '保持节奏，注意对极端地图拓扑进行边界条件测试。', timestamp: '10:28', isMe: true },
+        { id: 'hk3', senderId: 'm-capt', senderName: '陈星航', text: '队长：初赛排行榜更新了，我们队目前位列全国高校第3名！🚀', timestamp: '10:35', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-scholar-emily',
+      friendId: 'f-scholar-emily',
+      friendName: 'Dr. Emily Watson (MIT Visiting Fellow)',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150',
+      lastMessage: 'The spatial attention weights in our joint simulation show promising convergence!',
+      time: '09:12',
+      unreadCount: 1,
+      messages: [
+        { id: 'em1', senderId: 'f-scholar-emily', text: 'Hi Professor Zhang, I reviewed the latest federated spatial learning framework.', timestamp: '08:50', isMe: false },
+        { id: 'em2', senderId: 'me', text: 'Thanks Emily! We applied localized differential privacy to ensure student data safety.', timestamp: '09:05', isMe: true },
+        { id: 'em3', senderId: 'f-scholar-emily', text: 'The spatial attention weights in our joint simulation show promising convergence!', timestamp: '09:12', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-student-zhao',
+      friendId: 'f-stu-zhao',
+      friendName: '赵宇轩 (ACM算法竞赛集训队)',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '老师，今天的模拟赛全AC了！最后一道图论题用了您课上讲的轻重链剖分解法！',
+      time: '昨天',
+      unreadCount: 0,
+      messages: [
+        { id: 'zy1', senderId: 'f-stu-zhao', text: '张老师，这周区域赛选拔赛的压轴题树链剖分我们卡在常数优化上了。', timestamp: '昨天 16:20', isMe: false },
+        { id: 'zy2', senderId: 'me', text: '尝试用循环展开结合Cache友好型重构遍历序列，效率会有显著提升。', timestamp: '昨天 16:45', isMe: true },
+        { id: 'zy3', senderId: 'f-stu-zhao', text: '老师，今天的模拟赛全AC了！最后一道图论题用了您课上讲的轻重链剖分解法！', timestamp: '昨天 18:30', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-group-ta',
+      friendId: 'grp-ta-team',
+      friendName: '《高级算法》全体助教与导师协同组 📋',
+      avatar: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '小孙助教：第3周上机作业已全量批改完成，成绩分布直方图已上传。',
+      time: '昨天',
+      unreadCount: 0,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'ta-g1', senderId: 'me', text: '各位助教辛苦，期中考试前的答疑安排请在明天排定。', timestamp: '昨天 10:00', isMe: true },
+        { id: 'ta-g2', senderId: 'f-ta-sun', senderName: '孙助教', text: '小孙助教：第3周上机作业已全量批改完成，成绩分布直方图已上传。', timestamp: '昨天 15:40', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-dean-office',
+      friendId: 'f-dean-office',
+      friendName: '教务处考务科 (苏科长)',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '张教授好，关于期末专业核心课上机考试的机房机位与巡考表已更新完毕。',
+      time: '前天',
+      unreadCount: 0,
+      messages: [
+        { id: 'do1', senderId: 'f-dean-office', text: '张教授好，本学期《高级算法与AI》需要申请专业机房连续考试吗？', timestamp: '前天 09:10', isMe: false },
+        { id: 'do2', senderId: 'me', text: '是的苏科长，需要120台高配机位，已在教务OA提交环境配置说明。', timestamp: '前天 10:20', isMe: true },
+        { id: 'do3', senderId: 'f-dean-office', text: '张教授好，关于期末专业核心课上机考试的机房机位与巡考表已更新完毕。', timestamp: '前天 11:30', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-alumni-mentor',
+      friendId: 'f-alumni-lu',
+      friendName: '陆浩然 (阿里通义实验室 / 12级校友)',
+      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '张老师好！下周我们回母校举办空间AI产业前沿技术沙龙，期待与您相聚！',
+      time: '前天',
+      unreadCount: 0,
+      messages: [
+        { id: 'al1', senderId: 'f-alumni-lu', text: '张老师！您指导我们本科毕业设计的场景仿佛就在昨天。', timestamp: '前天 14:00', isMe: false },
+        { id: 'al2', senderId: 'me', text: '浩然，看到你在大模型时空智能领域取得的卓越成果，全系老师都为你骄傲！', timestamp: '前天 14:30', isMe: true },
+        { id: 'al3', senderId: 'f-alumni-lu', text: '张老师好！下周我们回母校举办空间AI产业前沿技术沙龙，期待与您相聚！', timestamp: '前天 15:10', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-student-wang',
+      friendId: 'f-stu-wang',
+      friendName: '王梓萌 (研二/空间多模态课题)',
+      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '张老师，大论文第三章消融实验已经跑完，周五组会我向您当面汇报！',
+      time: '周一',
+      unreadCount: 0,
+      messages: [
+        { id: 'wzm1', senderId: 'f-stu-wang', text: '张老师好，开题报告修改版已经发您邮箱了。', timestamp: '周一 10:10', isMe: false },
+        { id: 'wzm2', senderId: 'me', text: '梓萌，我看了对比实验部分，建议增加与传统隐马尔可夫链的精度对比。', timestamp: '周一 11:00', isMe: true },
+        { id: 'wzm3', senderId: 'f-stu-wang', text: '张老师，大论文第三章消融实验已经跑完，周五组会我向您当面汇报！', timestamp: '周一 11:45', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ins-team-campus-radar',
+      friendId: 'grp-campus-radar',
+      friendName: '校园智慧空间微围栏研发小组 🛰️',
+      avatar: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '硬件组：全校教学楼30个低功耗蓝牙星闪定位信标已完成固件OTA升级。',
+      time: '周一',
+      unreadCount: 1,
+      isTeam: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'cr1', senderId: 'me', text: '注意信标在走廊金属门屏蔽环境下的信号抖动抑制算法。', timestamp: '周一 09:20', isMe: true },
+        { id: 'cr2', senderId: 'm-hw-eng', senderName: '硬件工程师小李', text: '硬件组：全校教学楼30个低功耗蓝牙星闪定位信标已完成固件OTA升级。', timestamp: '周一 14:15', isMe: false },
+      ],
+    },
+  ],
+
+  // 5. 高校教学体系 · 副领航员 / 课程助教 (王助教)
+  ta: [
+    {
+      id: 'c-ta-prof-zhang',
+      friendId: 'f-prof-zhang',
+      friendName: '张立华 教授 (课程负责人)',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '小王，把周三实验课签到未入圈的学生名单整理出来发我',
+      time: '14:55',
+      unreadCount: 1,
+      isCloseFriend: true,
+      messages: [
+        { id: 'ta-tz1', senderId: 'f-prof-zhang', text: '小王，明天实验课机房准备情况如何？', timestamp: '14:20', isMe: false },
+        { id: 'ta-tz2', senderId: 'me', text: '张老师好！302教室的信标与GPU计算节点已完成测试，状态正常。', timestamp: '14:30', isMe: true },
+        { id: 'ta-tz3', senderId: 'f-prof-zhang', text: '小王，把周三实验课签到未入圈的学生名单整理出来发我', timestamp: '14:55', isMe: false },
+      ],
+    },
+    {
+      id: 'c-ta-class-tutoring',
+      friendId: 'grp-ta-tutoring',
+      friendName: '计科2401小班答疑与实验辅导群 💻',
+      avatar: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '助教提醒：实验报告提交截止本周日晚24:00，请勿逾期！',
+      time: '13:20',
+      unreadCount: 2,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'tt1', senderId: 'me', text: '助教提醒：实验报告提交截止本周日晚24:00，请勿逾期！', timestamp: '13:20', isMe: true },
+      ],
+    },
+    {
+      id: 'c-ta-monitor-zhao',
+      friendId: 'f-mon-zhao',
+      friendName: '赵班长 (班级守护者)',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '王助教，李同学因为校医院就诊请假，假条已在系统提交并附带病历。',
+      time: '10:45',
+      unreadCount: 0,
+      messages: [
+        { id: 'ta-tm1', senderId: 'f-mon-zhao', text: '王助教，李同学因为校医院就诊请假，假条已在系统提交并附带病历。', timestamp: '10:45', isMe: false },
+        { id: 'ta-tm2', senderId: 'me', text: '收到，已在助教端完成初审！', timestamp: '10:50', isMe: true },
+      ],
+    },
+  ],
+
+  // 6. 高校教学体系 · 星区守护者 / 院系辅导员 (李辅导员)
+  adviser: [
+    {
+      id: 'c-adv-monitors-group',
+      friendId: 'grp-adv-monitors',
+      friendName: '计算机学院2024级班委团支部工作群 🚩',
+      avatar: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '李辅导员：请各班班长于周五前报送本周未入圈与请假汇总表，严格执行出勤红线制度',
+      time: '15:20',
+      unreadCount: 5,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'am1', senderId: 'me', text: '请各班班长于周五前报送本周未入圈与请假汇总表，严格执行出勤红线制度', timestamp: '15:20', isMe: true },
+      ],
+    },
+    {
+      id: 'c-adv-zhao-mon',
+      friendId: 'f-zhao-mon',
+      friendName: '赵班长 (计科2401)',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '李老师，我们班本周到课率100%，无人缺勤！',
+      time: '14:10',
+      unreadCount: 0,
+      isCloseFriend: true,
+      messages: [
+        { id: 'az1', senderId: 'f-zhao-mon', text: '李老师，我们班本周到课率100%，无人缺勤！', timestamp: '14:10', isMe: false },
+        { id: 'az2', senderId: 'me', text: '一班表现非常出色，继续保持！班级团建活动经费已审批通过。', timestamp: '14:15', isMe: true },
+      ],
+    },
+    {
+      id: 'c-adv-prof-zhang',
+      friendId: 'f-prof-zhang',
+      friendName: '张立华 教授',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '李老师，近期个别偏科学生的谈心帮扶已完成，心态已调整良好。',
+      time: '11:30',
+      unreadCount: 0,
+      messages: [
+        { id: 'ap1', senderId: 'f-prof-zhang', text: '李老师，近期个别偏科学生的谈心帮扶已完成，心态已调整良好。', timestamp: '11:30', isMe: false },
+      ],
+    },
+  ],
+
+  // 7. 高校教学体系 · 班级守护者 / 小班班长 (赵班长)
+  monitor: [
+    {
+      id: 'c-mon-class-2401',
+      friendId: 'grp-class-2401-official',
+      friendName: '计科2024级一班官方大群 🎓 (33人)',
+      avatar: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '赵班长：通知：明天上午8:00张立华教授《高级算法》在计算机楼302准时开启考勤！',
+      time: '15:00',
+      unreadCount: 3,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'mon-mc1', senderId: 'me', text: '通知：明天上午8:00张立华教授《高级算法》在计算机楼302准时开启考勤！大家别迟到~', timestamp: '15:00', isMe: true },
+      ],
+    },
+    {
+      id: 'c-mon-prof-zhang',
+      friendId: 'f-prof-zhang',
+      friendName: '张立华 教授 (任课教师)',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '张老师好，明天班级到课人数已预统计完毕，全员均可准时入圈。',
+      time: '14:30',
+      unreadCount: 0,
+      isCloseFriend: true,
+      messages: [
+        { id: 'mp1', senderId: 'me', text: '张老师好，明天班级到课人数已预统计完毕，全员均可准时入圈。', timestamp: '14:30', isMe: true },
+        { id: 'mp2', senderId: 'f-prof-zhang', text: '好的赵班长，明天课堂有随堂测验，辛苦组织好纪律。', timestamp: '14:32', isMe: false },
+      ],
+    },
+    {
+      id: 'c-mon-stu-chen',
+      friendId: 'f-stu-chen',
+      friendName: '陈星航 (舍友/同班同学)',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '老赵，帮我占一个靠前排的插座位置，我马上到教室！🏃',
+      time: '13:55',
+      unreadCount: 1,
+      messages: [
+        { id: 'ms1', senderId: 'f-stu-chen', text: '老赵，帮我占一个靠前排的插座位置，我马上到教室！🏃', timestamp: '13:55', isMe: false },
+        { id: 'ms2', senderId: 'me', text: '位置给你留好啦，第三排靠中间！', timestamp: '13:58', isMe: true },
+      ],
+    },
+  ],
+
+  // 8. 高校教学体系 · 星航者 / 选课学生 (陈星航)
+  student: [
+    {
+      id: 'c-stu-dorm-402',
+      friendId: 'grp-dorm-402',
+      friendName: '402宿舍卧谈先锋队 🏠 (4人)',
+      avatar: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '下课一起去二食堂吃黄焖鸡，谁先到谁去占座！🍲',
+      time: '14:45',
+      unreadCount: 6,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'sd1', senderId: 'm-roommate1', senderName: '老刘', text: '下课一起去二食堂吃黄焖鸡，谁先到谁去占座！🍲', timestamp: '14:45', isMe: false },
+        { id: 'sd2', senderId: 'me', text: '我第一个到！马上抢二楼靠窗大桌 🏃‍♂️', timestamp: '14:48', isMe: true },
+      ],
+    },
+    {
+      id: 'c-stu-class-group',
+      friendId: 'grp-class-student',
+      friendName: '计科2024级一班交流群 💬',
+      avatar: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '张教授的课大家都签到了吗？蓝牙信标微围栏入圈好快',
+      time: '14:02',
+      unreadCount: 1,
+      isGroup: true,
+      messages: [
+        { id: 'sc1', senderId: 'm-classmate', senderName: '小李', text: '张教授的课大家都签到了吗？蓝牙信标微围栏入圈好快', timestamp: '14:02', isMe: false },
+      ],
+    },
+    {
+      id: 'c-stu-mon-zhao',
+      friendId: 'f-mon-zhao',
+      friendName: '赵班长 (班级守护者)',
+      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '星航，你刚才请假的假条辅导员已经终审通过了！',
+      time: '12:10',
+      unreadCount: 0,
+      isCloseFriend: true,
+      messages: [
+        { id: 'stu-sm1', senderId: 'f-mon-zhao', text: '星航，你刚才请假的假条辅导员已经终审通过了！', timestamp: '12:10', isMe: false },
+        { id: 'stu-sm2', senderId: 'me', text: '太感谢老赵了！', timestamp: '12:12', isMe: true },
+      ],
+    },
+  ],
+
+  // 9. 高校教学体系 · 星系管理员 / 教务处长 (林教务长)
+  admin: [
+    {
+      id: 'c-adm-steering-group',
+      friendId: 'grp-steering',
+      friendName: '全校教学督导与运行指挥大群 🏫',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '今日全校第一大节到课率98.6%，各教学楼空间微围栏运行平稳',
+      time: '15:30',
+      unreadCount: 2,
+      isGroup: true,
+      messages: [
+        { id: 'ad1', senderId: 'm-deputy', senderName: '教学运行科', text: '今日全校第一大节到课率98.6%，各教学楼空间微围栏运行平稳', timestamp: '15:30', isMe: false },
+      ],
+    },
+    {
+      id: 'c-adm-dean-cs',
+      friendId: 'f-dean-cs',
+      friendName: '计算机学院教学副院长',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '林处长，计算机学院本学期排课与实验机房改造方案已报送。',
+      time: '14:20',
+      unreadCount: 0,
+      messages: [
+        { id: 'dc1', senderId: 'f-dean-cs', text: '林处长，计算机学院本学期排课与实验机房改造方案已报送。', timestamp: '14:20', isMe: false },
+      ],
+    },
+  ],
+
+  // 10. 专属亲密伴侣 · 情侣守护者 (林语嫣)
+  lover_guardian: [
+    {
+      id: 'c-lov-alex',
+      friendId: 'f-alex-love',
+      friendName: 'Alex Mercer (专属情侣 ❤️)',
+      avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '宝贝！下班我过去接你，晚上去吃你最爱的那家日料好不好？🥰',
+      time: '15:15',
+      unreadCount: 1,
+      isCloseFriend: true,
+      messages: [
+        { id: 'lv1', senderId: 'me', text: '亲爱的，今天我们相恋已经第 520 天啦 ❤️', timestamp: '14:00', isMe: true },
+        { id: 'lv2', senderId: 'f-alex-love', text: '时间过得真快！心动测距显示我们现在相距 850m，地图上的红线好浪漫 ✨', timestamp: '14:05', isMe: false },
+        { id: 'lv3', senderId: 'me', text: '看到你的主页便签啦，我也超级超级想你！', timestamp: '14:10', isMe: true },
+        { id: 'lv4', senderId: 'f-alex-love', text: '宝贝！下班我过去接你，晚上去吃你最爱的那家日料好不好？🥰', timestamp: '15:15', isMe: false },
+      ],
+    },
+    {
+      id: 'c-lov-besties',
+      friendId: 'grp-besties',
+      friendName: '仙女姐妹淘 🌸 (3人)',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '周末要不要一起去黄河边那家新开的露台咖啡馆呀~',
+      time: '13:40',
+      unreadCount: 2,
+      isGroup: true,
+      messages: [
+        { id: 'lb1', senderId: 'm-sis1', senderName: '晴晴', text: '周末要不要一起去黄河边那家新开的露台咖啡馆呀~', timestamp: '13:40', isMe: false },
+      ],
+    },
+  ],
+
+  // 11. 潮流街拍创作者 (Sofia Chen)
+  sofia_creator: [
+    {
+      id: 'c-sof-mcn',
+      friendId: 'grp-mcn',
+      friendName: 'MCN达人内容创作中心 🎬 (18人)',
+      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=150',
+      lastMessage: 'Sofia，上一条兰州地标街拍星片播放破50万了！今晚追发一条幕后花絮',
+      time: '14:50',
+      unreadCount: 3,
+      isGroup: true,
+      messages: [
+        { id: 'sofia-mc1', senderId: 'm-producer', senderName: '制作人Tony', text: 'Sofia，上一条兰州地标街拍星片播放破50万了！今晚追发一条幕后花絮', timestamp: '14:50', isMe: false },
+      ],
+    },
+    {
+      id: 'c-sof-fans',
+      friendId: 'grp-fans',
+      friendName: 'Sofia粉丝官方应援营 💖',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '姐姐今天发的九宫格照片太绝了！求同款拍照打卡机位！',
+      time: '14:10',
+      unreadCount: 8,
+      isGroup: true,
+      messages: [
+        { id: 'mf1', senderId: 'm-fan1', senderName: '可可', text: '姐姐今天发的九宫格照片太绝了！求同款拍照打卡机位！', timestamp: '14:10', isMe: false },
+      ],
+    },
+  ],
+
+  // 12. 家庭关怀体系 · 家庭守护者 / 父亲 (陈立强)
+  family_guardian: [
+    {
+      id: 'c-fam-family-group',
+      friendId: 'grp-happy-family',
+      friendName: '幸福一家人 🏡 (4人)',
+      avatar: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '立强(我)：今天买了新鲜排骨和黄瓜，晚上大家早点回来吃饭 🍲',
+      time: '15:20',
+      unreadCount: 2,
+      isGroup: true,
+      groupAvatars: [
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
+        'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=150',
+      ],
+      messages: [
+        { id: 'fm1', senderId: 'me', text: '今天买了新鲜排骨和黄瓜，晚上大家早点回来吃饭 🍲', timestamp: '15:20', isMe: true },
+      ],
+    },
+    {
+      id: 'c-fam-son-hang',
+      friendId: 'f-son-hang',
+      friendName: '小航 (儿子)',
+      avatar: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '爸！我放学已经平安到家了，安全围栏应该给您推送通知了吧！',
+      time: '14:35',
+      unreadCount: 0,
+      isCloseFriend: true,
+      messages: [
+        { id: 'fs1', senderId: 'f-son-hang', text: '爸！我放学已经平安到家了，安全围栏应该给您推送通知了吧！', timestamp: '14:35', isMe: false },
+        { id: 'fs2', senderId: 'me', text: '收到了儿子，电量还有65%，先洗手吃点水果做作业。', timestamp: '14:38', isMe: true },
+      ],
+    },
+  ],
+
+  // 13. 家庭关怀体系 · 家庭被守护成员 / 孩童 (小航)
+  family_ward: [
+    {
+      id: 'c-ward-family-group',
+      friendId: 'grp-happy-family',
+      friendName: '幸福一家人 🏡 (4人)',
+      avatar: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '爸妈我今天在学校数学竞赛拿了一等奖！🎉',
+      time: '14:40',
+      unreadCount: 1,
+      isGroup: true,
+      messages: [
+        { id: 'wm1', senderId: 'me', text: '爸妈我今天在学校数学竞赛拿了一等奖！🎉', timestamp: '14:40', isMe: true },
+      ],
+    },
+    {
+      id: 'c-ward-father',
+      friendId: 'f-dad',
+      friendName: '爸爸 (陈立强)',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '真棒儿子！晚上爸爸给你做红烧排骨庆祝！',
+      time: '14:42',
+      unreadCount: 0,
+      isCloseFriend: true,
+      messages: [
+        { id: 'wd1', senderId: 'me', text: '爸！我今天数学竞赛拿奖啦！', timestamp: '14:40', isMe: true },
+        { id: 'wd2', senderId: 'f-dad', text: '真棒儿子！晚上爸爸给你做红烧排骨庆祝！', timestamp: '14:42', isMe: false },
+      ],
+    },
+  ],
+
+  // 14. 户外团队 · 追风骑行俱乐部领队 (李浩)
+  team_leader: [
+    {
+      id: 'c-tm-cycling-all',
+      friendId: 'grp-cycling-club',
+      friendName: '追风骑行俱乐部全员大群 🚴 (18人)',
+      avatar: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '李浩(领队)：周日兰州-刘家峡80km长途骑行集结令已发，请于早7:00在黄河铁桥集合',
+      time: '15:10',
+      unreadCount: 4,
+      isGroup: true,
+      messages: [
+        { id: 'hao-tm1', senderId: 'me', text: '各位队员注意：周日兰州-刘家峡80km长途骑行集结令已发，请于早7:00在黄河铁桥集合，检查好胎压与头盔！', timestamp: '15:10', isMe: true },
+      ],
+    },
+    {
+      id: 'c-tm-member-zhou',
+      friendId: 'f-member-zhou',
+      friendName: '周子轩 (骑行队员)',
+      avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '浩哥，我的公路车刚保养完换了新胎，后勤补给对讲机已就位！',
+      time: '14:50',
+      unreadCount: 0,
+      isCloseFriend: true,
+      messages: [
+        { id: 'hao-tz1', senderId: 'f-member-zhou', text: '浩哥，我的公路车刚保养完换了新胎，后勤补给对讲机已就位！', timestamp: '14:50', isMe: false },
+        { id: 'hao-tz2', senderId: 'me', text: '收到！周日你负责带后半段压速，保持队伍整齐。', timestamp: '14:55', isMe: true },
+      ],
+    },
+  ],
+
+  // 15. 户外团队 · 骑行队员 (周子轩)
+  team_member: [
+    {
+      id: 'c-tm-cycling-all-member',
+      friendId: 'grp-cycling-club',
+      friendName: '追风骑行俱乐部全员大群 🚴 (18人)',
+      avatar: 'https://images.unsplash.com/photo-1517649763962-0c623266ddc0?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '周子轩(我)：收到浩哥！已准备好头盔和码表，周日早7:00准时集合',
+      time: '15:12',
+      unreadCount: 2,
+      isGroup: true,
+      messages: [
+        { id: 'zm1', senderId: 'f-leader-li', senderName: '李浩 (队长)', text: '周日兰州-刘家峡80km长途骑行集结令已发，请于早7:00在黄河铁桥集合！', timestamp: '15:10', isMe: false },
+        { id: 'zm2', senderId: 'me', text: '收到浩哥！已准备好头盔和码表，周日早7:00准时集合', timestamp: '15:12', isMe: true },
+      ],
+    },
+    {
+      id: 'c-tm-leader-li',
+      friendId: 'f-leader-li',
+      friendName: '李浩 (队长/领队)',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150',
+      lastMessage: '子轩，你负责带后半段压速，保持队伍整齐。',
+      time: '14:55',
+      unreadCount: 0,
+      isCloseFriend: true,
+      messages: [
+        { id: 'zl1', senderId: 'me', text: '浩哥，车子调好了，对讲机充好电了！', timestamp: '14:50', isMe: true },
+        { id: 'zl2', senderId: 'f-leader-li', text: '子轩，你负责带后半段压速，保持队伍整齐。', timestamp: '14:55', isMe: false },
+      ],
+    },
+  ],
+};
+
+// Helper function to get initial conversations for any given role ID
+export function getConversationsForRole(roleId: string): ChatConversation[] {
+  return ROLE_CONVERSATIONS_MAP[roleId] || ROLE_CONVERSATIONS_MAP.alex_explorer || INITIAL_CHATS;
+}

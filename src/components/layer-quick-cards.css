@@ -1,0 +1,76 @@
+/* Object-layer cards share the map's light/dark surface tokens. */
+.stellar-layer-quickbar[data-layer="activities"],
+.stellar-layer-quickbar[data-layer="schedules"],
+.stellar-layer-quickbar[data-layer="places"] { width: 100%; }
+.stellar-layer-quickbar[data-layer="activities"] .stellar-layer-quickbar-scroll,
+.stellar-layer-quickbar[data-layer="schedules"] .stellar-layer-quickbar-scroll,
+.stellar-layer-quickbar[data-layer="places"] .stellar-layer-quickbar-scroll {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 8px 16px;
+  scroll-padding-inline: 16px;
+  padding-inline-end: max(16px, calc(100% - 180px));
+  scroll-snap-type: x mandatory;
+  touch-action: pan-x;
+  overscroll-behavior-x: contain;
+}
+.stellar-layer-quickbar[data-layer="places"] .stellar-layer-quickbar-scroll { padding-inline-end: max(16px, calc(100% - 260px)); }
+.stellar-place-intent { padding: 0 5px; border-radius: 6px; color: #6e319e; background: #f2e3ff; font-size: 11px; font-weight: 750; }
+.stellar-layer-card {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid var(--stellar-border, #dce2ec);
+  border-radius: 18px;
+  background: var(--stellar-surface, #fff);
+  color: var(--stellar-surface-ink, #172033);
+  box-shadow: 0 5px 14px #142c4926, inset 0 1px 0 #ffffff45;
+  text-align: left;
+  cursor: pointer;
+  scroll-snap-align: start;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+.stellar-layer-card[data-focused="true"] {
+  border-color: #0875ff;
+  box-shadow: 0 0 0 1px #0875ff, 0 6px 16px #0875ff26;
+}
+.stellar-layer-card:active { transform: scale(.98); }
+.stellar-layer-card:focus-visible { outline: 3px solid #0875ff; outline-offset: 2px; }
+.stellar-photo-card { width: 164px; height: 156px; flex-direction: column; }
+.stellar-layer-photo { position: relative; display: block; width: 100%; height: 76px; flex-shrink: 0; border-radius: 12px; overflow: hidden; background: var(--stellar-surface-soft, #eaf1ff); }
+.stellar-layer-photo > img,
+.stellar-place-photo > img,
+.stellar-star-image { display: block; width: 100%; height: 100%; object-fit: cover; }
+.stellar-card-photo-placeholder { display: grid; width: 100%; height: 100%; place-items: center; font-size: 32px; background: linear-gradient(135deg, #0875ff18, #b563ff20); }
+.stellar-card-status { position: absolute; top: 5px; left: 5px; display: flex; align-items: center; min-height: 22px; padding: 1px 7px; border-radius: 11px; background: #fff1be; border: 1px solid #f2c954; color: #854500; font-size: 11px; font-weight: 800; box-shadow: 0 2px 5px #18213625; }
+.stellar-card-status[data-phase="active"] { background: #c9f7db; border-color: #68d591; color: #075d31; }
+.stellar-card-status[data-phase="ended"],
+.stellar-card-status[data-phase="cancelled"] { background: #e9edf3; border-color: #c8d2df; color: #4a586b; }
+.is-schedule .stellar-card-status[data-phase="upcoming"] { background: #e1ecff; border-color: #accaff; color: #164d99; }
+.stellar-card-host { position: absolute; width: 26px; height: 26px; left: 9px; top: 67px; border: 2px solid var(--stellar-surface, #fff); border-radius: 50%; object-fit: cover; box-shadow: 0 3px 7px #142c4933; }
+.stellar-card-title { display: block; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; line-height: 18px; font-weight: 800; }
+.stellar-photo-card > .stellar-card-title { margin-top: 10px; }
+.stellar-card-meta { display: flex; align-items: center; gap: 4px; width: 100%; min-width: 0; color: var(--stellar-surface-ink, #172033); font-size: 12px; line-height: 17px; }
+.stellar-card-meta > svg { flex-shrink: 0; }
+.stellar-card-meta > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stellar-info-card { width: 244px; height: 120px; gap: 12px; align-items: stretch; }
+.stellar-place-photo { display: block; width: 64px; height: 104px; flex-shrink: 0; overflow: hidden; border-radius: 11px; background: var(--stellar-surface-soft, #eaf1ff); }
+.stellar-star-photo { position: relative; display: block; width: 52px; height: 104px; flex-shrink: 0; }
+.stellar-star-image,
+.stellar-star-photo > .stellar-card-photo-placeholder { border-radius: 9px; }
+.stellar-info-body { display: flex; flex: 1; flex-direction: column; justify-content: center; gap: 5px; min-width: 0; }
+.stellar-card-author { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: 12px; line-height: 24px; font-weight: 650; }
+.stellar-card-author > img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.stellar-card-author > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stellar-star-avatar { position: absolute; left: -4px; top: -4px; width: 28px; height: 28px; border: 2px solid var(--stellar-surface, #fff); border-radius: 50%; object-fit: cover; box-shadow: 0 3px 6px #142c4933; }
+.stellar-star-calendar { position: absolute; right: -7px; top: -4px; display: flex; flex-direction: column; width: 28px; height: 28px; border-radius: 5px; overflow: hidden; background: #fff; color: #172033; transform: rotate(-10deg); box-shadow: 0 3px 6px #142c4945; text-align: center; }
+.stellar-star-calendar > span { height: 11px; line-height: 11px; background: #f04470; color: #fff; font-size: 8px; font-weight: 800; }
+.stellar-star-calendar > strong { line-height: 17px; font-size: 13px; }
+.dark .stellar-layer-card { box-shadow: 0 6px 18px #02091566, inset 0 1px 0 #ffffff12; }
+@media (prefers-reduced-motion: reduce) {
+  .stellar-layer-card { transition: none; }
+  .stellar-layer-quickbar-scroll { scroll-behavior: auto; }
+}

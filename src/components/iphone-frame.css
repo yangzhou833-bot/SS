@@ -1,0 +1,14 @@
+.phone-status-floating{background:linear-gradient(180deg,#ffffffef 0%,#ffffffb5 65%,#ffffff00 100%);border:0;box-shadow:none}
+.phone-status-floating .phone-status-icons,.phone-status-floating .phone-status-clock{filter:drop-shadow(0 1px 1px #ffffffc0) drop-shadow(0 2px 4px #15376a24)}
+.phone-status-floating .phone-status-icons{gap:7px;background:transparent;border:0;padding:0}
+.dark .phone-status-floating{background:linear-gradient(180deg,#18253a55 0%,#18253a1a 65%,#18253a00 100%)}
+.dark .phone-status-floating .phone-status-icons,.dark .phone-status-floating .phone-status-clock{filter:drop-shadow(0 1px 2px #152d51) drop-shadow(0 3px 5px #0c203b55)}
+.phone-screen.is-immersive #stellar-phone-content{position:absolute;inset:0;height:100%;background:transparent}
+.phone-screen.is-immersive>.phone-status-floating{position:absolute;inset:0 0 auto;pointer-events:none;background:transparent}
+.phone-screen.is-immersive>.phone-status-floating>div{pointer-events:auto}
+.phone-screen.is-immersive>.phone-home-indicator{position:absolute;inset:auto 0 0;background:transparent;border:0}
+.phone-screen.is-immersive .stellar-map-shell>header{top:44px}
+.phone-screen.is-immersive .stellar-map-shell>nav{bottom:18px}
+.phone-screen.is-immersive:has(.bump-friend-dock) .stellar-map-shell>header,.phone-screen.is-immersive:has(.bump-friend-dock) .stellar-map-shell>nav{visibility:hidden;pointer-events:none}
+
+.phone-screen.is-immersive>.phone-status-floating,.phone-screen.is-immersive>.phone-home-indicator{z-index:250}

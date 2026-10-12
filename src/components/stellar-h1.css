@@ -1,0 +1,395 @@
+/* H1 / F1 share one palette; personal note and message themes keep their colours. */
+:root {
+  --stellar-ink: #131d2b;
+  --stellar-muted: #59677b;
+  --stellar-control: #151719;
+  --stellar-control-ink: #fff;
+  --stellar-surface: #fff;
+  --stellar-surface-ink: #131d2b;
+  --stellar-surface-soft: #f1f4f9;
+  --stellar-border: #dde4ee;
+  --stellar-shadow: 0 4px 14px #18213625;
+}
+.dark {
+  --stellar-ink: #f4f7fc;
+  --stellar-muted: #b3c0d3;
+  --stellar-control: #f8fafc;
+  --stellar-control-ink: #151719;
+  --stellar-surface: #182231;
+  --stellar-surface-ink: #f4f7fc;
+  --stellar-surface-soft: #243246;
+  --stellar-border: #344256;
+  --stellar-shadow: 0 5px 18px #0006;
+}
+.stellar-app {
+  color: var(--stellar-ink);
+  background: var(--stellar-surface);
+  font-family: "Avenir Next", "PingFang SC", "Microsoft YaHei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.stellar-app button { touch-action: manipulation; }
+.stellar-app button:focus-visible,
+.stellar-app input:focus-visible,
+.stellar-app textarea:focus-visible,
+.stellar-app select:focus-visible {
+  outline: 3px solid #9560ef;
+  outline-offset: 3px;
+}
+.phone-screen.is-immersive .stellar-map-shell > header.stellar-home-topbar { top: 52px; }
+.phone-screen.is-immersive .stellar-map-shell > nav.stellar-bottomnav { bottom: 18px; }
+.phone-screen.is-immersive .stellar-app.stellar-map-shell > nav.stellar-bottomnav > button .stellar-nav-disc svg {
+  color: var(--stellar-control-ink);
+  filter: none;
+}
+.phone-screen.is-immersive .stellar-app.stellar-map-shell > nav.stellar-bottomnav > button .stellar-nav-disc.is-active svg { color: #fff; }
+.phone-screen.is-immersive .stellar-map-shell > nav.stellar-bottomnav .stellar-nav-label {
+  color: var(--stellar-ink);
+  text-shadow: 0 1px 5px #fff;
+}
+.dark .phone-screen.is-immersive .stellar-map-shell > nav.stellar-bottomnav .stellar-nav-label { text-shadow: 0 1px 5px #07111f; }
+.phone-screen.is-immersive .stellar-map-shell > nav.stellar-bottomnav [aria-current="page"] .stellar-nav-label { color: #0866d9; }
+.dark .phone-screen.is-immersive .stellar-map-shell > nav.stellar-bottomnav [aria-current="page"] .stellar-nav-label { color: #72b0ff; }
+.stellar-app .map-privacy-button {
+  top: 52px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  background: var(--stellar-control);
+  color: var(--stellar-control-ink);
+  box-shadow: var(--stellar-shadow);
+}
+.stellar-app .map-privacy-button.is-friend-context { top: 60px; left: 16px; right: auto; }
+.stellar-app .map-privacy-button[aria-pressed="true"] { background: #7955f7; color: #fff; }
+.stellar-map-info { top: 104px; left: 12px; right: 12px; }
+.stellar-map-info-surface {
+  min-height: 36px;
+  border-radius: 20px;
+  background: var(--stellar-surface);
+  color: var(--stellar-surface-ink);
+  border: 1px solid var(--stellar-border);
+  box-shadow: var(--stellar-shadow);
+}
+.stellar-map-info-surface > button {
+  min-height: 36px;
+  height: auto;
+  padding: 0 10px;
+  font-size: 12px;
+  color: inherit;
+}
+.stellar-map-info-surface > button::before { content: ""; position: absolute; inset: -4px 0; }
+.stellar-map-info-surface > button span { font-size: 12px; color: inherit; }
+.stellar-map-info-surface > button svg { width: 15px; height: 15px; color: inherit; }
+.stellar-map-info-details { color: var(--stellar-ink); background: var(--stellar-surface); }
+.stellar-map-info-details button[title="收起"] { min-width: 32px; min-height: 32px; }
+.stellar-map-compass { left: 12px; bottom: calc(286px + env(safe-area-inset-bottom, 0px)); }
+.stellar-map-compass-button { width: 36px; height: 36px; }
+.stellar-map-compass-button .floating-compass-dial { width: 36px; height: 36px; }
+.stellar-map-compass-button .floating-compass-dial strong { font-family: 'Avenir Next', 'PingFang SC', sans-serif; font-size: 11px; font-weight: 850; letter-spacing: -.4px; line-height: 1; }
+.stellar-map-compass-button .floating-compass-dial small { font-size: 6.5px; font-weight: 750; line-height: 1.1; color: #4b5e78; letter-spacing: .2px; }
+.stellar-map-compass-button .floating-compass-orbit svg { width: 11px; height: 11px; left: calc(50% - 5.5px); top: 1.5px; }
+.stellar-map-compass-button:active { transform: scale(.94); }
+.stellar-map-zoom-controls { left: 12px; bottom: calc(136px + env(safe-area-inset-bottom, 0px)); }
+.stellar-map-zoom-controls > div { gap: 8px; }
+.stellar-map-zoom-controls button {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--stellar-border);
+  box-shadow: var(--stellar-shadow);
+  color: var(--stellar-surface-ink);
+  background: var(--stellar-surface);
+  font-size: 25px;
+  font-weight: 500;
+}
+.stellar-map-layer-controls { right: 12px; bottom: calc(184px + env(safe-area-inset-bottom, 0px)); }
+.stellar-map-layer-controls #map-main-fab-btn {
+  width: 44px;
+  height: 44px;
+  background: var(--stellar-surface);
+  color: var(--stellar-surface-ink);
+  border: 1px solid var(--stellar-border);
+  box-shadow: var(--stellar-shadow);
+  animation: none;
+  transform: none;
+}
+.stellar-map-layer-controls #map-main-fab-btn[aria-expanded="true"] { background: #0875ff; color: #fff; }
+.stellar-map-quick-toggle { right: 12px; bottom: calc(118px + env(safe-area-inset-bottom, 0px)); }
+.stellar-map-quick-toggle button { width: 44px; height: 44px; box-shadow: var(--stellar-shadow); }
+.stellar-map-quickbar { left: 64px; right: 64px; bottom: calc(112px + env(safe-area-inset-bottom, 0px)); }
+.stellar-map-quickbar.is-object-layer { left: 64px; right: 64px; }
+.dark .floating-compass-dial { background: #fff; color: #172039; }
+.dark .floating-compass-dial small { color: #4b5e78; }
+.dark .floating-compass-ticks line { stroke: #78889c; }
+.dark .floating-compass-ticks line:nth-child(3n + 1) { stroke: #172039; }
+
+/* Existing object cards and full pages keep their own workflows and accents. */
+.stellar-app :is(.life-map-panel, .self-map-card, .map-creation-dialog, .map-navigation-hud, .life-reminder-banner, .floating-sticker-library, .bump-lock-card) {
+  background: var(--stellar-surface);
+  color: var(--stellar-surface-ink);
+  border-color: var(--stellar-border);
+  border-radius: 22px;
+  box-shadow: var(--stellar-shadow);
+}
+.stellar-app :is(.life-map-heading, .life-map-tabs, .life-main-tabs, .self-map-actions, .map-creation-header, .map-creation-footer) { border-color: var(--stellar-border); }
+.stellar-app :is(.life-map-heading, .life-map-tabs, .life-main-tabs, .map-creation-header) { color: var(--stellar-ink); }
+.dark .stellar-app :is([class~="bg-white"], [class~="dark:bg-black"], [class~="dark:bg-zinc-900"], [class~="dark:bg-gray-900"], [class~="dark:bg-[#242526]"]) { background-color: var(--stellar-surface); }
+.dark .stellar-app :is([class~="bg-[#F0F2F5]"], [class~="bg-[#FAFBFD]"], [class~="bg-gray-50"], [class~="bg-gray-100"], [class~="dark:bg-zinc-800"]) { background-color: var(--stellar-surface-soft); }
+.dark .stellar-app :is([class~="text-[#050505]"], [class~="text-[#1C1E21]"], [class~="text-gray-900"], [class~="text-black"]) { color: var(--stellar-ink); }
+.dark .stellar-app :is([class~="text-[#65676B]"], [class~="text-gray-400"], [class~="text-gray-500"], [class~="text-gray-600"]) { color: var(--stellar-muted); }
+.dark .stellar-app :is([class~="border-[#E4E6EB]"], [class~="border-gray-200"], [class~="dark:border-zinc-800"]) { border-color: var(--stellar-border); }
+.dark #settings-drawer-panel [class*="bg-[#E7F3FF]"] {
+  background-color: #203a55;
+  color: #bedbff;
+}
+.dark .stellar-app .stellar-map-info-details :is([class*="bg-[#F0F2F5]"], [class*="bg-white/"]) { background: var(--stellar-surface-soft); }
+.dark .stellar-app :is(.life-map-panel, .self-map-card, .map-creation-dialog) :is(p, small, label) { color: var(--stellar-muted); }
+.dark .stellar-app :is(.life-place-row, .life-day-button, .life-schedule-row, .life-reminder-banner span) { color: var(--stellar-ink); }
+.dark .stellar-app :is(.life-day-button, .life-place-row) { background: var(--stellar-surface-soft); border-color: var(--stellar-border); }
+.stellar-app .bump-dock-close { background: #fff; color: #172039; }
+.stellar-app .stellar-nav-disc { background: var(--stellar-control); color: var(--stellar-control-ink); }
+.stellar-app .stellar-nav-disc.is-active { background: #0875ff; color: #fff; }
+.stellar-app .stellar-nav-disc.is-profile { background: var(--stellar-surface); }
+.stellar-app .stellar-nav-disc.is-profile.is-active { background: #0875ff; }
+.stellar-app [data-chat-screen] { --canvas-paper: #f3f5f9; --canvas-ink: var(--stellar-ink); --control-fill: var(--stellar-control); --control-ink: var(--stellar-control-ink); }
+.dark .stellar-app [data-chat-screen] { --canvas-paper: #111c2b; }
+.stellar-app [data-chat-screen] .stellar-chat-drawer { background: var(--stellar-surface); color: var(--stellar-surface-ink); }
+.stellar-app [data-chat-screen] .bump-canvas-message.is-sticker .bump-rich-message { background: transparent; }
+.style-stellar {
+  --style-bg: linear-gradient(110deg, #0077ae, #155ef3 40%, #9131d7 75%, #bd1fd7);
+  --style-color: #fff;
+  --style-radius: 28px;
+  --style-border: 1px solid #ffffffb0;
+  --style-shadow: 0 5px 18px #0875ff38, inset 0 1px 1px #ffffff55;
+  --style-font: "Avenir Next", "PingFang SC", sans-serif;
+  --style-weight: 750;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stellar-map-info-surface, .stellar-map-compass-button { transition: none; }
+}
+
+/* Approved map layer cards keep the existing map and detail actions. */
+.stellar-layer-map { --layer-tools-bottom: calc(136px + env(safe-area-inset-bottom, 0px)); }
+.stellar-layer-map[data-object-quickbar="photo"] { --layer-tools-bottom: calc(280px + env(safe-area-inset-bottom, 0px)); }
+.stellar-layer-map[data-object-quickbar="compact"] { --layer-tools-bottom: calc(244px + env(safe-area-inset-bottom, 0px)); }
+.stellar-layer-map .stellar-map-zoom-controls { bottom: var(--layer-tools-bottom); }
+.stellar-layer-map .stellar-map-zoom-controls > div { gap: 8px; margin-block: 0; }
+.stellar-layer-map .stellar-map-zoom-controls > div > button { margin-block: 0; }
+.stellar-layer-map .stellar-map-zoom-controls > :last-child:not(:first-child) { position: absolute; top: 100%; margin-top: 4px; }
+.stellar-layer-map .stellar-map-layer-controls { bottom: var(--layer-tools-bottom); }
+.stellar-layer-map .stellar-map-quick-toggle { bottom: calc(var(--layer-tools-bottom) + 52px); }
+.stellar-layer-map .stellar-map-compass { bottom: calc(var(--layer-tools-bottom) + 112px); }
+.stellar-layer-map .stellar-map-compass > div,
+.stellar-layer-map .stellar-map-compass-button,
+.stellar-layer-map .stellar-map-compass-button .floating-compass-dial { width: 44px; height: 44px; }
+.stellar-layer-map .stellar-map-compass-button .floating-compass-orbit svg { width: 13px; height: 13px; left: calc(50% - 6.5px); top: -4px; }
+.stellar-layer-map .stellar-map-compass-button .floating-compass-dial strong { font-size: 12px; }
+.stellar-layer-map .stellar-map-quickbar.is-object-layer { left: 0; right: 0; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+.stellar-layer-summary { position: absolute; bottom: calc(100% + 12px); left: 72px; right: 72px; height: 44px; display: flex; justify-content: space-between; align-items: center; gap: 8px; pointer-events: auto; }
+.stellar-layer-summary button { height: 44px; border: 1px solid var(--stellar-border); background: var(--stellar-surface); color: var(--stellar-surface-ink); box-shadow: var(--stellar-shadow); display: flex; justify-content: center; align-items: center; cursor: pointer; }
+.stellar-layer-summary-label { border-radius: 22px; padding: 0 14px; gap: 7px; font-size: 13px; font-weight: 750; white-space: nowrap; min-width: 0; }
+.stellar-layer-summary-label > span:first-child:not(:last-child) { font-size: 22px; }
+.stellar-layer-summary-close { width: 44px; flex-shrink: 0; border-radius: 50%; }
+.stellar-layer-summary button:active { opacity: .8; }
+.stellar-map-shell > nav.stellar-bottomnav { background: transparent; border: 0; box-shadow: none; }
+.stellar-map-shell > div:has(> [aria-label="行程详情"]),
+.stellar-layer-map > div:has(> .star-card-detail) { align-items: flex-end; padding: 12px; background: #07132520; backdrop-filter: none; }
+.stellar-map-shell [aria-label="行程详情"],
+.stellar-layer-map .star-card-detail { border-radius: 22px; max-height: 72%; box-shadow: 0 12px 38px #0c162c30; background: var(--stellar-surface); color: var(--stellar-surface-ink); }
+@media (max-width: 360px) {
+  .stellar-layer-summary { left: 64px; right: 64px; }
+  .stellar-layer-summary-label { padding-inline: 10px; font-size: 12px; }
+}
+
+
+/* Approved day/night home: one floating header row, no privacy/exploration capsules. */
+.stellar-home-topbar { container-type: inline-size; }
+.stellar-home-topbar .stellar-topbar-row { justify-content: flex-start; gap: 8px; }
+.stellar-home-topbar #topbar-action-buttons { padding-right: 0; gap: 8px; }
+.stellar-app .stellar-home-topbar .stellar-home-search,
+.stellar-app .stellar-home-topbar .stellar-topbar-button {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  padding: 0;
+  background: #fff;
+  color: #131d2b;
+  border-color: #ffffffb3;
+  box-shadow: 0 3px 12px #07152b26, inset 0 1px 1px #fff;
+}
+.stellar-home-topbar .stellar-home-search { margin: 0; }
+.stellar-home-topbar .stellar-home-search svg { width: 22px; height: 22px; opacity: 1; }
+.stellar-home-topbar .stellar-topbar-button svg { width: 21px; height: 21px; color: inherit; }
+.stellar-app .stellar-home-topbar .stellar-topbar-button[data-variant="primary"] {
+  background: #0875ff;
+  color: #fff;
+  border-color: #2485ff;
+  box-shadow: 0 4px 16px #0875ff45;
+}
+.stellar-home-topbar .stellar-topbar-button[data-variant="primary"] svg { width: 25px; height: 25px; }
+.stellar-home-weather-space { flex: 1; min-width: 0; }
+#stellar-home-weather-slot {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  pointer-events: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.stellar-home-weather {
+  width: 100%;
+  max-width: 320px;
+  height: 44px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.stellar-home-weather .stellar-map-info-surface {
+  width: 100%;
+  max-width: 100%;
+  height: 44px;
+  min-height: 44px;
+  overflow: hidden;
+  border-radius: 9999px; /* 圆角栏框 */
+  color: #050505;
+  background: #ffffff; /* 纯白 */
+  border: 1px solid #E4E6EB;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: all 180ms ease;
+}
+.stellar-home-weather .stellar-map-info-surface:hover {
+  border-color: #1877F2;
+  box-shadow: 0 2px 8px rgba(24, 119, 242, 0.15);
+}
+.dark .stellar-home-weather .stellar-map-info-surface {
+  background: #ffffff;
+  color: #050505;
+  border-color: #E4E6EB;
+}
+.dark .stellar-home-weather .stellar-map-info-surface:hover {
+  border-color: #1877F2;
+}
+.stellar-home-weather #mini-weather-bar-btn {
+  height: 44px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  width: 100%;
+  background: #ffffff;
+  color: #050505;
+}
+.stellar-weather-summary { display: flex; align-items: center; flex: 1; min-width: 0; gap: 6px; }
+.stellar-home-weather #mini-weather-bar-btn .stellar-weather-icon { font-size: 20px; line-height: 1; flex-shrink: 0; }
+.stellar-weather-copy, .stellar-weather-date { display: flex; flex-direction: column; gap: 1px; line-height: 1.15; text-align: left; font-weight: 700; }
+.stellar-weather-copy { min-width: 0; }
+.stellar-weather-copy > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stellar-weather-date { padding-left: 8px; flex-shrink: 0; border-left: 1px solid #E4E6EB; text-align: right; }
+.dark .stellar-weather-date { border-left-color: #E4E6EB; }
+.stellar-weather-copy strong, .stellar-weather-date strong { font-size: 12px; font-weight: 800; white-space: nowrap; }
+
+/* 展开后从竖向卡片变为横向卡片 */
+.stellar-home-weather #stellar-weather-details {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(740px, calc(100cqw - 24px));
+  max-height: 520px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  max-width: 740px;
+  border: 1px solid #E4E6EB;
+  border-radius: 16px; /* 圆角展开卡片 */
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+  z-index: 1000;
+}
+.dark .stellar-home-weather #stellar-weather-details {
+  background: #18191a;
+  border-color: #393a3b;
+  color: #e4e6eb;
+}
+/* The phone preview is narrower than the desktop viewport. */
+.stellar-weather-detail-grid { grid-template-columns: minmax(0, 1fr); }
+.stellar-weather-detail-heading { flex-wrap: wrap; gap: 4px; }
+.stellar-weather-detail-heading > div { min-width: 0; flex-wrap: wrap; }
+@container (min-width: 600px) {
+  .stellar-weather-detail-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.stellar-map-info { justify-content: flex-end; }
+.stellar-home-exploration { width: min(286px, calc(100% - 24px)); }
+.stellar-home-exploration .stellar-map-info-surface { width: 100%; }
+.stellar-app .stellar-layer-map .stellar-map-zoom-controls button,
+.stellar-app .stellar-layer-map .stellar-map-layer-controls #map-main-fab-btn,
+.stellar-app .stellar-layer-map .stellar-map-quick-toggle > button {
+  background: #fff;
+  color: #131d2b;
+  border-color: #ffffffb3;
+  box-shadow: 0 3px 12px #07152b26;
+}
+.stellar-layer-map .stellar-map-layer-controls #map-main-fab-btn[aria-expanded="true"] { background: #0875ff; color: #fff; }
+.stellar-layer-map .stellar-map-quick-toggle > button[aria-pressed="true"] svg { color: inherit; }
+.stellar-map-shell > nav.stellar-bottomnav .stellar-nav-disc { box-shadow: 0 4px 14px #07152b35; }
+@media (max-width: 360px) {
+  .stellar-home-topbar .stellar-topbar-row,
+  .stellar-home-topbar #topbar-action-buttons { gap: 6px; }
+  .stellar-home-weather #mini-weather-bar-btn { padding-inline: 5px; gap: 3px; }
+  .stellar-home-weather #mini-weather-bar-btn .stellar-weather-icon { font-size: 21px; }
+  .stellar-weather-date { padding-left: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stellar-home-weather .stellar-map-info-surface { transition: none; }
+}
+
+/* Blue hour affects only the home basemap tiles, never friend markers or controls. */
+.stellar-map-shell .stellar-layer-map .stellar-tiles-dark {
+  filter: invert(.95) contrast(.9) sepia(.7) hue-rotate(170deg) saturate(1.8) brightness(.82);
+}
+
+/* Fit the care map and its scrolling overview to the actual phone height. */
+.stellar-family-care { container-type: size; }
+.stellar-family-care .family-care-map { min-height: min(220px, 30cqh); }
+.stellar-family-care .family-care-overview { max-height: 45cqh; }
+
+/* Seven care controls retain their touch targets inside a narrow phone. */
+.stellar-topbar:has(#topbar-family-care-buttons) { height: 104px; }
+.stellar-topbar:has(#topbar-family-care-buttons) .stellar-topbar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: 44px 48px;
+  gap: 4px 8px;
+}
+.stellar-topbar:has(#topbar-family-care-buttons) .stellar-topbar-left { min-width: 0; }
+.stellar-topbar:has(#topbar-family-care-buttons) .stellar-topbar-left > button {
+  width: 44px;
+  height: 44px;
+}
+.stellar-topbar:has(#topbar-family-care-buttons) .stellar-topbar-row > div:nth-child(2) {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0;
+  width: max-content;
+  justify-self: center;
+  background: var(--stellar-surface-soft);
+  border-color: var(--stellar-border);
+}
+.stellar-topbar:has(#topbar-family-care-buttons) .stellar-topbar-row > div:nth-child(2) > button {
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--stellar-surface-ink);
+}
+.stellar-topbar:has(#topbar-family-care-buttons) .stellar-topbar-row > div:nth-child(2) > button.bg-white {
+  background: var(--stellar-surface);
+  border-color: var(--stellar-border);
+  color: #0866d9;
+}
+.dark .stellar-topbar:has(#topbar-family-care-buttons) .stellar-topbar-row > div:nth-child(2) > button.bg-white { color: #72b0ff; }
+#topbar-family-care-buttons { grid-row: 1; grid-column: 2; display: flex; gap: 4px; }
+#topbar-family-care-buttons > * { margin: 0; }
+#topbar-family-care-buttons > div:first-child { display: none; }
+.stellar-family-care { top: calc(104px + var(--sat, 0px)); }
+.phone-screen.is-immersive #settings-drawer-panel { padding-top: 44px; }

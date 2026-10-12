@@ -1,0 +1,102 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" }
+      },
+      "required": ["uid", "email"]
+    },
+    "Book": {
+      "title": "Book",
+      "description": "Book metadata",
+      "type": "object",
+      "properties": {
+        "bookId": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" }
+      },
+      "required": ["bookId", "title"]
+    },
+    "UserBook": {
+      "title": "UserBook",
+      "description": "User library status",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "status": { "type": "string", "enum": ["reading", "completed"] },
+        "progress": { "type": "number" }
+      },
+      "required": ["userId", "bookId", "status"]
+    },
+    "Annotation": {
+      "title": "Annotation",
+      "description": "User annotation",
+      "type": "object",
+      "properties": {
+        "annotationId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "userId": { "type": "string" },
+        "text": { "type": "string" },
+        "page": { "type": "number" }
+      },
+      "required": ["annotationId", "bookId", "userId", "text", "page"]
+    },
+    "Discussion": {
+      "title": "Discussion",
+      "description": "Annotation discussion",
+      "type": "object",
+      "properties": {
+        "discussionId": { "type": "string" },
+        "annotationId": { "type": "string" },
+        "userId": { "type": "string" },
+        "comment": { "type": "string" }
+      },
+      "required": ["discussionId", "annotationId", "userId", "comment"]
+    },
+    "MapHotspot": {
+      "title": "MapHotspot",
+      "description": "Map reading activity hotspot",
+      "type": "object",
+      "properties": {
+        "hotspotId": { "type": "string" },
+        "bookId": { "type": "string" },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "count": { "type": "number" }
+      },
+      "required": ["hotspotId", "bookId", "latitude", "longitude"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "books/{bookId}": {
+      "schema": "Book",
+      "description": "Book catalog"
+    },
+    "users/{userId}/library/{bookId}": {
+      "schema": "UserBook",
+      "description": "User library"
+    },
+    "books/{bookId}/annotations/{annotationId}": {
+      "schema": "Annotation",
+      "description": "Book annotations"
+    },
+    "annotations/{annotationId}/discussions/{discussionId}": {
+      "schema": "Discussion",
+      "description": "Annotation discussions"
+    },
+    "mapHotspots/{hotspotId}": {
+      "schema": "MapHotspot",
+      "description": "Map hotspots"
+    }
+  }
+}

@@ -1,0 +1,105 @@
+.map-privacy-button{position:absolute;top:52px;right:16px;z-index:60;display:grid;place-items:center;width:40px;height:40px;border:0;border-radius:50%;background:#151719;color:#fff;box-shadow:0 4px 12px #18213625;cursor:pointer;transition:transform .18s}
+.stellar-map-shell #topbar-action-buttons{padding-right:52px}
+.dark .map-privacy-button{background:#fff;color:#151719;box-shadow:0 4px 14px #0005}
+.map-privacy-button[aria-pressed=true]{background:#7955f7;color:#fff}
+.map-privacy-button:active{transform:scale(.94)}
+.map-privacy-button:focus-visible{outline:3px solid #7955f7;outline-offset:3px}
+/* Theme follows the user's display setting, never a friend's activity. */
+.bump-friend-header,.bump-friend-dock.is-floating{--dock-ink:var(--stellar-ink,#151719);--dock-button:var(--stellar-control,#151719);--dock-icon:var(--stellar-control-ink,#fff);--dock-shadow:var(--stellar-shadow,0 5px 14px #1821362b);color:var(--dock-ink);text-shadow:0 1px 6px #ffffffd9}
+.dark .bump-friend-header,.dark .bump-friend-dock.is-floating{--dock-ink:var(--stellar-ink,#fff);--dock-button:var(--stellar-control,#fff);--dock-icon:var(--stellar-control-ink,#151719);--dock-shadow:var(--stellar-shadow,0 5px 18px #0006);text-shadow:0 1px 6px #000b}
+.bump-friend-header{top:max(64px,calc(env(safe-area-inset-top) + 14px));left:16px;right:16px;text-align:center}
+.bump-friend-header h2{font-size:22px;line-height:1.2;font-weight:800;letter-spacing:-.5px;max-width:calc(100% - 108px);margin:0 auto}
+.bump-friend-header .bump-friend-kicker{display:flex;align-items:center;justify-content:center;gap:8px;color:inherit;font-size:11px;line-height:1.4;margin:3px 48px 0;min-height:24px;opacity:.8}
+.bump-friend-kicker select{pointer-events:auto;min-height:44px;max-width:88px;padding:0 4px;background:transparent;color:inherit;border:0;font:inherit;font-weight:650}
+.bump-friend-kicker select option{background:var(--stellar-surface,#fff);color:var(--stellar-surface-ink,#151719)}
+.bump-friend-header .bump-dock-close{pointer-events:auto;position:absolute;right:0;top:-4px;display:grid;place-items:center;width:46px;height:46px;border:1px solid #ffffff90;border-radius:50%;background:#fff;color:#172039;box-shadow:var(--dock-shadow);text-shadow:none;transition:transform .18s}
+.bump-friend-dock.is-floating{background:transparent;border:0;border-radius:0;box-shadow:none;padding:78px 0 0;left:16px;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));overflow:visible;max-height:none}
+.is-floating .bump-dock-actions{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));justify-items:center;gap:6px;overflow:visible;padding:4px 0 25px}
+.is-floating .bump-dock-actions button{position:relative;display:grid;place-items:center;width:clamp(44px,12cqw,52px);min-width:44px;min-height:44px;height:clamp(44px,12cqw,52px);padding:0;background:var(--dock-button);color:var(--dock-icon);border:1px solid #ffffff20;border-radius:50%;box-shadow:var(--dock-shadow),inset 0 1px 1px #ffffff20;text-shadow:none;transition:transform .18s}
+.is-floating .bump-dock-actions button span{position:absolute;top:calc(100% + 7px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11px;line-height:1.2;font-weight:750;color:var(--dock-ink);text-shadow:0 1px 4px #ffffffd9}
+.dark .is-floating .bump-dock-actions button span{text-shadow:0 1px 5px #000b}
+.is-floating .bump-dock-actions button svg{width:24px;height:24px;filter:none}
+.is-floating .bump-dock-actions button[aria-disabled=true]{opacity:.45}
+.is-floating button:active,.bump-friend-header .bump-dock-close:active{transform:scale(.94)}
+.is-floating button:focus-visible,.bump-friend-header button:focus-visible,.bump-friend-kicker select:focus-visible{outline:3px solid #9864ef;outline-offset:3px}
+.is-floating .bump-friend-action-strip{gap:10px;align-items:center;margin:8px 0 10px}
+.is-floating .floating-message-style{display:grid;place-items:center;background:var(--dock-button);color:var(--dock-icon);border:1px solid #ffffff20;border-radius:50%;width:48px;height:48px;flex:0 0 48px;box-shadow:var(--dock-shadow);text-shadow:none;font-size:19px}
+.is-floating .floating-message-entry{min-width:0;min-height:48px;height:50px;padding:10px 17px;cursor:pointer;text-shadow:var(--style-text-shadow,none);font-size:18px;font-weight:750;letter-spacing:0;border-radius:var(--style-radius,28px);box-shadow:var(--style-shadow,var(--dock-shadow))}
+.floating-message-entry>span{flex:1;min-width:0;text-align:inherit}
+.floating-message-entry>svg{flex:0 0 20px}
+.bump-friend-dock.is-floating .bump-sticker-grid{--sticker-column:74px;display:grid;grid-template-rows:repeat(2,76px);grid-auto-flow:row;grid-auto-columns:var(--sticker-column);overflow-x:auto;overflow-y:hidden;touch-action:pan-x;overscroll-behavior-x:contain;scrollbar-width:none;gap:8px;height:168px;margin:0;padding:4px 1px;scroll-snap-type:x proximity;mask-image:linear-gradient(to right,#000 0 94%,transparent 100%)}
+.bump-friend-dock.is-floating .bump-sticker-cell{width:100%;height:76px;min-height:44px;display:grid;place-items:center;padding:0;background:transparent;border:0;position:relative;scroll-snap-align:start;touch-action:pan-x}
+.bump-friend-dock.is-floating .bump-sticker-cell .bump-sticker-art{width:68px!important;height:68px!important;filter:drop-shadow(0 5px 4px #17203933)}
+.bump-friend-dock.is-floating .bump-sticker-cell>small{display:none}
+.bump-friend-dock.is-floating .bump-lock{bottom:0;padding:2px 5px;font-size:8px;line-height:1.2;box-shadow:0 2px 6px #17203920}
+.is-floating .floating-sticker-add svg{width:52px;height:52px;padding:12px;background:var(--dock-button);color:var(--dock-icon);border:1px solid #ffffff20;border-radius:50%;box-shadow:var(--dock-shadow)}
+.floating-friend-compass{position:absolute;left:0;top:0;display:grid;place-items:center;min-width:44px;min-height:44px;border:0;padding:0;background:transparent;cursor:pointer}
+.floating-compass-dial{width:64px;height:64px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;background:#fff;color:#172039;border:1px solid #ffffffc0;box-shadow:var(--dock-shadow),inset 0 1px 3px #fff;text-shadow:none}
+.floating-compass-ticks{position:absolute;inset:0;width:100%;height:100%}
+.floating-compass-dial strong{font-family:'Avenir Next','PingFang SC',sans-serif;font-size:17px;font-weight:850;letter-spacing:-.5px;line-height:1;margin-top:0}
+.floating-compass-dial small{font-size:9px;font-weight:750;line-height:1.2;color:#4b5e78;letter-spacing:.3px}
+.floating-compass-orbit{position:absolute;inset:0;transition:transform .12s linear;pointer-events:none}
+.floating-compass-orbit svg{position:absolute;width:18px;height:18px;left:calc(50% - 9px);top:2px;filter:drop-shadow(0 1px 1px #1685f840)}
+.floating-sticker-library{position:absolute;z-index:160;left:12px;right:12px;bottom:20px;max-height:calc(100% - 110px);overflow-y:auto;padding:16px;background:var(--stellar-surface,#fff);color:var(--stellar-surface-ink,#151719);border:1px solid #dce2ec;border-radius:24px;box-shadow:var(--stellar-shadow,0 8px 40px #101b3644);pointer-events:auto}
+.dark .floating-sticker-library{background:var(--stellar-surface,#25282d);color:var(--stellar-surface-ink,#fff);border-color:#ffffff20}
+.floating-sticker-library header{display:flex;justify-content:space-between;align-items:center;font-size:15px;gap:12px}
+.floating-sticker-library header button{display:grid;place-items:center;width:44px;min-height:44px;border-radius:50%;background:var(--stellar-control,#151719);color:var(--stellar-control-ink,#fff)}
+.dark .floating-sticker-library header button{background:var(--stellar-control,#fff);color:var(--stellar-control-ink,#151719)}
+.floating-sticker-library p{font-size:11px;opacity:.7;margin:5px 0 12px}
+.floating-sticker-library>div{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.floating-sticker-library>div button{display:flex;flex-direction:column;align-items:center;gap:4px;min-height:44px;padding:6px;font-size:10px}
+.floating-sticker-library button:disabled{opacity:.45}
+.floating-sticker-library small{font-size:13px;color:#9864ef}
+.bump-lock-card{background:var(--stellar-surface,#fff);color:var(--stellar-surface-ink,#151719)}
+.dark .bump-lock-card{background:var(--stellar-surface,#182231);color:var(--stellar-surface-ink,#fff)}
+.bump-lock-card>button:first-child{display:grid;place-items:center;min-width:44px;min-height:44px;border-radius:50%;background:var(--stellar-control,#151719);color:var(--stellar-control-ink,#fff)}
+.dark .bump-lock-card>button:first-child{background:var(--stellar-control,#fff);color:var(--stellar-control-ink,#151719)}
+.bump-lock-card p{color:inherit;opacity:.7}
+@container(height < 700px){.bump-friend-dock.is-floating{padding-top:68px;bottom:calc(12px + env(safe-area-inset-bottom))}.bump-friend-dock.is-floating .bump-sticker-grid{--sticker-column:64px;grid-template-rows:repeat(2,64px);height:144px;gap:8px}.bump-friend-dock.is-floating .bump-sticker-cell{height:64px}.bump-friend-dock.is-floating .bump-sticker-cell .bump-sticker-art{width:56px!important;height:56px!important}.is-floating .bump-dock-actions{padding-bottom:23px}.is-floating .bump-dock-actions button{width:44px;height:44px}.is-floating .bump-dock-actions button span{font-size:10px}.floating-compass-dial{width:58px;height:58px}.is-floating .floating-message-style{width:44px;height:44px;flex-basis:44px}.is-floating .floating-message-entry{height:46px;min-height:44px}}
+@container (height < 500px) and (width > 500px){.bump-friend-header{top:max(18px,env(safe-area-inset-top));padding-right:50%}.bump-friend-header h2{max-width:100%;font-size:20px}.bump-friend-header .bump-friend-kicker{margin:0;font-size:10px}.bump-friend-dock.is-floating{left:50%;right:16px;bottom:calc(8px + env(safe-area-inset-bottom));max-width:none;padding-top:54px}.is-floating .bump-dock-actions{gap:3px;padding:2px 0 21px}.is-floating .bump-friend-action-strip{margin:6px 0 8px;gap:8px}.bump-friend-dock.is-floating .bump-sticker-grid{--sticker-column:58px;grid-template-rows:repeat(2,46px);height:104px;gap:4px 8px}.bump-friend-dock.is-floating .bump-sticker-cell{height:46px}.bump-friend-dock.is-floating .bump-sticker-cell .bump-sticker-art{width:44px!important;height:44px!important}.floating-compass-dial{width:48px;height:48px}.floating-compass-dial strong{font-size:14px}.floating-compass-dial small{font-size:8px}.floating-compass-orbit svg{width:14px;height:14px;left:calc(50% - 7px);top:1px}.is-floating .floating-sticker-add svg{width:44px;height:44px;padding:10px}}
+@media(prefers-reduced-motion:reduce){.floating-compass-orbit,.is-floating button,.bump-friend-header .bump-dock-close{transition:none}.bump-friend-dock.is-floating{animation:none}.is-floating button:active,.bump-friend-header .bump-dock-close:active{transform:none}}
+
+.life-reminder-banner{position:absolute;z-index:180;top:66px;left:12px;right:12px;display:flex;align-items:center;gap:8px;padding:12px;background:#fff;color:#142b4a;border:1px solid #dfebff;border-radius:6px;box-shadow:0 8px 28px #0829502b;font-size:11px}.life-reminder-banner>div{flex:1;min-width:0}.life-reminder-banner strong,.life-reminder-banner span{display:block}.life-reminder-banner span{margin-top:4px;color:#59697e}.life-reminder-banner button{flex-shrink:0;border:0;border-radius:6px;padding:8px;background:#1877f2;color:white;font-weight:700}.life-reminder-banner button:last-child{background:transparent;color:#59697e;padding:4px}
+
+.flight-aircraft-pin,.flight-airport-pin{display:flex;flex-direction:column;align-items:center;border:0;background:transparent;text-shadow:0 2px 5px #07182c;color:#fff;cursor:pointer}.flight-aircraft-pin>span{font-size:64px;filter:drop-shadow(0 5px 7px #16396280)}.flight-aircraft-pin strong,.flight-airport-pin small{padding:4px 7px;border-radius:6px;background:#1877f2;color:white;max-width:160px;font-size:11px}.flight-aircraft-pin small{margin-top:3px;padding:3px 6px;background:#fff;color:#42526a;text-shadow:none;border-radius:6px;max-width:200px;font-size:9px}.flight-airport-pin{font-size:34px}
+
+/* Every effect is painted inside the phone portal, never the desktop viewport. */
+.sticker-screen-effect{position:absolute;inset:0;z-index:200;overflow:hidden;contain:paint;pointer-events:none;isolation:isolate;color:#fff;}
+.sticker-charge-core{position:absolute;left:50%;top:43%;display:grid;place-items:center;transform-origin:center;filter:drop-shadow(0 10px 12px #17203935);transition:transform .05s linear;}
+.sticker-charge-core .bump-sticker-art{display:block;}
+.sticker-charge-heart .sticker-charge-core:after{content:'';position:absolute;top:97%;height:75px;width:23px;border-left:1px solid #ffe2ee;border-radius:50%;transform:rotate(-8deg);}
+.sticker-charge-liquid{position:absolute;bottom:0;left:0;right:0;transition:height .05s linear;background:linear-gradient(#f3be50eb,#dc8b14ea);box-shadow:inset 10px 0 30px #ffffff25,inset -10px 0 35px #bb611840;}
+.sticker-charge-liquid-top{position:absolute;top:-13px;left:-10%;width:120%;height:26px;border-radius:50%;background:#fff9df;box-shadow:0 -5px 10px #fff7dd99;animation:sticker-fluid-wave 1.25s ease-in-out infinite alternate;}
+.sticker-charge-liquid-top:after{content:'';position:absolute;inset:8px 0 -9px;background:radial-gradient(circle at 10px 0,#fff9df 0 10px,transparent 11px) 0 0/22px 20px repeat-x;}
+.sticker-charge-liquid>i{position:absolute;bottom:-20px;border:1px solid #fff8df9c;border-radius:50%;background:#ffffff24;animation:sticker-liquid-bubble 1.8s ease-out infinite;}
+.sticker-charge-cry .sticker-charge-liquid{background:linear-gradient(#6ecff4b3,#217fcddd);box-shadow:inset 8px 0 28px #e0ffff45;}
+.sticker-charge-cry .sticker-charge-liquid-top{background:#9de4ffc9;box-shadow:0 -4px 20px #d4f5ff50;}
+.sticker-charge-cry .sticker-charge-liquid-top:after{display:none;}
+.sticker-charge-caption{position:absolute;top:74px;left:50%;transform:translateX(-50%);width:180px;text-align:center;text-shadow:0 2px 5px #10213f;font-family:'Avenir Next','PingFang SC',sans-serif;}
+.sticker-charge-caption strong{display:block;font-size:14px;font-weight:800;}.sticker-charge-caption>span{display:block;font-size:10px;margin-top:5px;opacity:.85;}.sticker-charge-caption>i{display:block;height:3px;width:78px;margin:9px auto;background:#ffffff45;border-radius:3px;overflow:hidden;}.sticker-charge-caption b{display:block;height:100%;background:var(--effect-color);}
+.sticker-charge-focus{position:absolute;inset:0;background:radial-gradient(circle at 50% 43%,transparent 0 90px,#18224280 160px);}.sticker-charge-focus i{position:absolute;left:50%;top:43%;width:220px;height:220px;border:1px solid #d6c8ff99;border-radius:50%;transform:translate(-50%,-50%);animation:sticker-focus 1.4s ease-out infinite;}.sticker-charge-focus i:nth-child(2){animation-delay:.4s}.sticker-charge-focus i:nth-child(3){animation-delay:.8s}.sticker-charge-focus>span{position:absolute;left:calc(50% - 10px);top:calc(43% - 12px);font-size:22px;color:#fff;}
+.sticker-charge-wordwave{position:absolute;top:23%;left:-10%;width:120%;display:flex;flex-direction:column;gap:28px;transform:rotate(-9deg);}.sticker-charge-wordwave strong{font-size:48px;font-weight:1000;letter-spacing:-2px;line-height:1;text-align:center;color:#ffdf9d;text-shadow:0 4px 0 #ac5529,0 8px 16px #13203e55;animation:sticker-word-wave .75s ease-in-out infinite alternate;}
+.sticker-charge-heat{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(transparent,#ff9e3244 50%,#ff56238c);}.sticker-charge-heat i{position:absolute;bottom:5%;left:20%;width:14%;height:70%;border:3px solid #ffb15650;border-width:0 3px 0 0;border-radius:50%;filter:blur(4px);animation:sticker-heat 1s ease-in-out infinite alternate;}.sticker-charge-heat i:nth-child(2){left:45%;animation-delay:.2s}.sticker-charge-heat i:nth-child(3){left:70%;animation-delay:.4s}
+.sticker-charge-orbit{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);border:1px solid #ffffff3b;border-radius:50%;animation:sticker-orbit 6s linear infinite;}.sticker-charge-orbit>span{position:absolute;left:calc(50% - 10px);top:calc(50% - 10px);font-size:23px;font-weight:1000;color:var(--effect-color);text-shadow:0 2px 6px #17203945;}
+.sticker-charge-stellar-planet .sticker-charge-orbit{border-width:3px;border-color:#b9b5ff90;box-shadow:0 0 30px #929eff55,inset 0 0 20px #929eff30;}
+.sticker-charge-stellar-sleep .sticker-charge-orbit{border:0;animation-duration:14s;background:radial-gradient(#c8ddff30,transparent 70%);}.sticker-charge-stellar-sleep .sticker-charge-orbit>span{font-size:28px;font-style:italic;}
+.sticker-charge-steam{position:absolute;left:20%;right:20%;bottom:87%;height:95px;display:flex;justify-content:space-around;}.sticker-charge-steam i{width:16px;height:100%;border:3px solid #fff6e7b3;border-width:0 3px 0 0;border-radius:50%;filter:blur(1px);animation:sticker-steam 1.25s ease-in-out infinite;}.sticker-charge-steam i:nth-child(2){animation-delay:.3s}.sticker-charge-steam i:nth-child(3){animation-delay:.6s}
+.sticker-charge-pages{position:absolute;left:20%;top:22%;width:60%;height:62%;perspective:200px;}.sticker-charge-pages i{position:absolute;inset:0;background:linear-gradient(90deg,#cbb8e9,#fff8ee);border:1px solid #e7d4bb;border-radius:3px;transform-origin:left center;animation:sticker-page 1.2s ease-in-out infinite;}.sticker-charge-pages i:nth-child(2){animation-delay:.4s}.sticker-charge-pages i:nth-child(3){animation-delay:.8s}
+.sticker-charge-burst{position:absolute;left:50%;top:43%;width:0;height:0;}.sticker-charge-burst>span{position:absolute;font-size:26px;font-weight:1000;animation:sticker-burst .78s cubic-bezier(.15,.65,.35,1) both;filter:drop-shadow(0 2px 3px #13203e22);}.sticker-charge-burst.is-confetti>span{width:10px;height:19px;background:currentColor;border-radius:2px;}.sticker-charge-burst.is-splash>span{width:13px;height:22px;background:currentColor;border:1px solid #ffffff50;border-radius:60% 50% 60% 25%;}.sticker-charge-pop-ring{position:absolute;left:-65px;top:-65px;width:130px;height:130px;border:8px solid var(--effect-color);border-radius:50%;animation:sticker-pop .5s ease-out both;}
+.stellar-screen-jolt{animation:sticker-screen-shake .32s ease-in-out;}
+.sticker-knock-target{position:absolute;left:50%;top:35%;width:100px;height:100px;transform:translate(-50%,-50%);display:grid;place-items:center;}.sticker-knock-target i{position:absolute;inset:0;border:2px solid #d8bdff;border-radius:50%;animation:sticker-knock-ring .8s ease-out both;}.sticker-knock-target i:nth-child(2){animation-delay:.15s}.sticker-knock-target i:nth-child(3){animation-delay:.3s}.sticker-knock-target b{font-size:58px;animation:sticker-knock-hand .45s ease-in-out 2;filter:drop-shadow(0 5px 5px #101b3666);}.sticker-knock-target strong{position:absolute;top:105%;color:#fff;font-size:14px;font-weight:900;text-shadow:0 2px 4px #101b36;}
+.sticker-charge-reduced>div{position:absolute;left:50%;top:80px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:8px 12px;background:#fff;color:#172039;border:1px solid #e4e6eb;border-radius:6px;font-size:12px;white-space:nowrap;}
+@keyframes sticker-fluid-wave{from{transform:rotate(-2deg) translateX(-2%)}to{transform:rotate(2deg) translateX(2%)}}
+@keyframes sticker-liquid-bubble{to{bottom:100%;opacity:0;transform:translateX(20px)}}
+@keyframes sticker-focus{from{transform:translate(-50%,-50%) scale(1.3);opacity:0}50%{opacity:1}to{transform:translate(-50%,-50%) scale(.6);opacity:0}}
+@keyframes sticker-word-wave{from{transform:translateX(-22px) scale(.94)}to{transform:translateX(22px) scale(1.05)}}
+@keyframes sticker-heat{to{transform:translateY(-30px) skewX(13deg);opacity:.4}}
+@keyframes sticker-orbit{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes sticker-steam{from{transform:translateY(20px) scaleX(.7);opacity:0}45%{opacity:.9}to{transform:translateY(-25px) scaleX(1.4);opacity:0}}
+@keyframes sticker-page{from{transform:rotateY(0);opacity:0}20%{opacity:1}to{transform:rotateY(-160deg);opacity:0}}
+@keyframes sticker-burst{from{transform:translate(0,0) scale(.3);opacity:1}70%{opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(var(--spin)) scale(.8);opacity:0}}
+@keyframes sticker-pop{to{transform:scale(3.5);opacity:0}}
+@keyframes sticker-screen-shake{0%,100%{transform:translate(0)}20%{transform:translate(-4px,2px)}40%{transform:translate(4px,-2px)}60%{transform:translate(-3px,1px)}80%{transform:translate(2px,-1px)}}
+@keyframes sticker-knock-hand{0%,100%{transform:translateX(10px) rotate(10deg) scale(1)}30%{transform:translateX(-9px) rotate(-8deg) scale(.92)}45%{transform:translateX(0) scale(1.07)}}
+@keyframes sticker-knock-ring{from{transform:scale(.6);opacity:.9}to{transform:scale(2.1);opacity:0}}
+@media(prefers-reduced-motion:reduce){.stellar-screen-jolt{animation:none}.sticker-screen-effect *{animation:none!important;transition:none!important}.sticker-knock-target i{display:none}}

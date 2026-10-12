@@ -1,0 +1,175 @@
+.stellar-topbar {
+  color: var(--stellar-surface-ink, #172033);
+  background: var(--stellar-surface, #fff);
+  border-color: var(--stellar-border, #dce2ec);
+}
+
+.stellar-topbar-button {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--stellar-border, #dce2ec);
+  background: var(--stellar-surface, #fff);
+  color: var(--stellar-surface-ink, #172033);
+  box-shadow: var(--stellar-shadow, 0 4px 12px #18213625);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.stellar-topbar-button[data-variant="primary"],
+.stellar-topbar-button[data-variant="cosmic-primary"] {
+  color: #fff;
+  background: #0875ff;
+  border-color: #0875ff;
+}
+.stellar-home-topbar .stellar-topbar-button svg { color: inherit; }
+.stellar-topbar-title > span:first-child { color: var(--stellar-surface-ink, #172033); }
+
+.stellar-map-shell > header.stellar-home-topbar {
+  height: 44px;
+  padding: 0 12px;
+}
+.stellar-home-topbar .stellar-topbar-row { gap: 8px; }
+.stellar-home-topbar #topbar-action-buttons {
+  gap: 8px;
+  padding-right: 52px;
+}
+.stellar-home-topbar #topbar-action-buttons > * { margin-inline: 0; }
+.stellar-home-search {
+  height: 44px;
+  margin: 0;
+  gap: 8px;
+  padding-inline: 12px;
+  border-color: var(--stellar-border, #dce2ec);
+  background: var(--stellar-surface, #fff);
+  color: var(--stellar-surface-ink, #172033);
+  box-shadow: var(--stellar-shadow, 0 4px 12px #18213625);
+  font-size: 12px;
+  text-align: left;
+  pointer-events: auto;
+}
+.stellar-home-search svg { opacity: .6; }
+.stellar-home-search span { opacity: .7; }
+
+.stellar-search-surface,
+.stellar-search-cancel,
+.stellar-search-suggestions {
+  min-height: 44px;
+  border-radius: 22px;
+  background: var(--stellar-surface, #fff);
+  color: var(--stellar-surface-ink, #172033);
+  border-color: var(--stellar-border, #dce2ec);
+  box-shadow: var(--stellar-shadow, 0 4px 12px #18213625);
+}
+.stellar-search-surface input {
+  color: var(--stellar-surface-ink, #172033);
+  font-size: 16px;
+}
+.stellar-search-suggestions { padding: 14px; border-radius: 18px; pointer-events: auto; }
+.stellar-search-suggestions > div { color: var(--stellar-surface-ink, #172033); }
+.stellar-search-suggestions button {
+  min-height: 44px;
+  color: var(--stellar-surface-ink, #172033);
+  background: var(--stellar-surface, #fff);
+  border-color: var(--stellar-border, #dce2ec);
+  border-radius: 10px;
+}
+
+.stellar-bottomnav {
+  height: 80px;
+  background: var(--stellar-surface, #fff);
+  border-top: 1px solid var(--stellar-border, #dce2ec);
+}
+.stellar-map-shell > nav.stellar-bottomnav { height: 78px; padding: 0 8px; }
+.stellar-nav-item {
+  display: grid;
+  grid-template-rows: 54px 18px;
+  justify-items: center;
+  align-content: center;
+  min-width: 0;
+  min-height: 72px;
+  padding: 0;
+  gap: 2px;
+  border: 0;
+  background: transparent;
+}
+.stellar-nav-disc {
+  width: 44px;
+  height: 44px;
+  background: var(--stellar-control, #171b25);
+  color: var(--stellar-control-ink, #fff);
+  box-shadow: var(--stellar-shadow, 0 4px 12px #18213625);
+  border: 1px solid #ffffff26;
+}
+.stellar-nav-disc.is-active {
+  width: 50px;
+  height: 50px;
+  background: #0875ff;
+  color: #fff;
+  border-color: #ffffff66;
+  box-shadow: 0 5px 16px #0875ff40;
+}
+.stellar-map-shell > nav.stellar-bottomnav .stellar-nav-disc svg,
+.stellar-bottomnav .stellar-nav-disc svg { color: inherit; filter: none; }
+.stellar-nav-disc.is-profile { padding: 2px; background: var(--stellar-surface, #fff); }
+.stellar-nav-disc.is-profile.is-active { background: #0875ff; }
+.stellar-nav-portrait { width: 100%; height: 100%; overflow: hidden; }
+.stellar-map-shell > nav.stellar-bottomnav .stellar-nav-label,
+.stellar-bottomnav .stellar-nav-label {
+  color: var(--stellar-ink, #172033);
+  font-weight: 750;
+  text-shadow: 0 1px 5px #ffffff99;
+}
+.stellar-map-shell > nav.stellar-bottomnav [aria-current="page"] .stellar-nav-label,
+.stellar-bottomnav [aria-current="page"] .stellar-nav-label { color: #0875ff; }
+.dark .stellar-map-shell > nav.stellar-bottomnav .stellar-nav-label { text-shadow: 0 1px 5px #0008; }
+.dark .stellar-map-shell > nav.stellar-bottomnav [aria-current="page"] .stellar-nav-label,
+.dark .stellar-bottomnav [aria-current="page"] .stellar-nav-label { color: #72b0ff; }
+
+.stellar-topbar button:focus-visible,
+.stellar-bottomnav button:focus-visible {
+  outline: 3px solid #7955f7;
+  outline-offset: 3px;
+}
+
+.stellar-friends-quickbar { padding-block: 6px; gap: 12px; }
+.stellar-quick-friend-button {
+  min-width: 56px;
+  min-height: 68px;
+  gap: 2px;
+  background: transparent;
+  border: 0;
+  transition: transform 160ms ease;
+}
+.stellar-quick-friend-avatar {
+  background: #fff;
+  border: 2px solid #fff;
+  box-shadow: var(--stellar-shadow, 0 4px 12px #18213625);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.stellar-quick-friend-avatar.is-selected {
+  border-color: #9458ff;
+  box-shadow: 0 0 0 2px #9458ff30, var(--stellar-shadow, 0 4px 12px #18213625);
+}
+.stellar-quick-friend-name {
+  color: var(--stellar-ink, #172033);
+  font-size: 12px;
+  font-weight: 750;
+  line-height: 1.25;
+  text-shadow: 0 1px 5px #ffffffb3;
+}
+.dark .stellar-quick-friend-name { text-shadow: 0 1px 5px #0008; }
+.stellar-quick-friend-button:focus-visible { outline: 3px solid #7955f7; outline-offset: 2px; border-radius: 16px; }
+
+@media (max-width: 390px) {
+  .stellar-home-topbar .stellar-topbar-row,
+  .stellar-home-topbar #topbar-action-buttons { gap: 6px; }
+  .stellar-home-search { padding-inline: 10px; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stellar-topbar button,
+  .stellar-bottomnav button,
+  .stellar-quick-friend-button,
+  .stellar-quick-friend-avatar,
+  .stellar-topbar .animate-ping,
+  .stellar-bottomnav .animate-ping { animation: none; transition: none; }
+}

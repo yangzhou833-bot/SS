@@ -1,0 +1,38 @@
+.bump-canvas-message.is-selected{outline:1px solid #1877f2;outline-offset:4px;border-radius:6px}
+.bump-canvas-message .bump-transform-handle{width:26px;height:26px;border-radius:50%;background:#fff;color:#151719;border:0;box-shadow:0 3px 10px #18213626}
+.bump-canvas-message .bump-transform-handle svg{display:block}
+.bump-canvas-message .bump-rotate-handle{left:-13px;top:-13px}
+.bump-canvas-message .bump-rotate-handle:after{display:none}
+.bump-canvas-message .bump-scale-handle{right:-13px;top:-13px;bottom:auto}
+.dark .bump-canvas-message .bump-transform-handle{background:#fff;color:#151719}
+.bump-canvas-precision{position:absolute;top:48px;bottom:88px;right:8px;z-index:42;display:flex;flex-direction:column;gap:8px;max-height:260px;padding:8px 5px;background:#ffffffdf;border:1px solid #e4e6eb;border-radius:6px;box-shadow:0 2px 8px #15152810;backdrop-filter:blur(12px);color:#1877f2}
+.bump-precision-control{width:25px;flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;gap:5px}
+.bump-precision-track{position:relative;width:24px;flex:1;min-height:0;cursor:ns-resize;touch-action:none;background:repeating-linear-gradient(to top,transparent 0 9px,#b7c5d9 9px 10px);background-size:10px 100%;background-position:center;background-repeat:no-repeat;outline:none}
+.bump-precision-track:before{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:#dce4ed}
+.bump-precision-track:focus-visible{outline:2px solid #1877f2;outline-offset:3px;border-radius:2px}
+.bump-precision-knob{position:absolute;left:5px;width:14px;height:5px;transform:translateY(50%);border-radius:2px;background:#1877f2;box-shadow:0 1px 4px #1877f233;pointer-events:none}
+.bump-precision-control output{font-size:8px;font-weight:700;color:#65676b;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bump-canvas-menu{border:1px solid #e4e6eb;border-radius:6px;padding:5px;box-shadow:0 2px 12px #15152814;animation:stellar-canvas-tools-in .16s ease-out}
+.bump-canvas-primary-actions{display:flex;align-items:center;justify-content:space-around;gap:4px}
+.bump-canvas-primary-actions button{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;min-width:42px;min-height:46px;padding:4px 5px;border:1px solid transparent;border-radius:6px;color:#1877f2;font-size:10px;font-weight:700;cursor:pointer}
+.bump-canvas-primary-actions button:hover{background:#f0f5ff;border-color:#1877f24d}
+.bump-canvas-primary-actions .bump-canvas-close-actions{min-width:28px;color:#65676b}
+.bump-canvas-menu .bump-reaction-picker{border-top:1px solid #e4e6eb;margin-top:4px;padding-top:5px}
+.bump-canvas-trash{border:1px solid #e4e6eb;border-radius:6px;color:#65676b;transition:background .12s,color .12s,transform .12s}
+.bump-canvas-trash.is-over{background:#ee4766;border-color:#ee4766;transform:scale(1.05)}
+.stellar-chat-drawer{position:relative;flex-shrink:0;display:flex;flex-direction:column;min-height:160px;max-height:65%;overflow:hidden;background:white;border-top:1px solid #e4e6eb;z-index:30;transition:height .22s cubic-bezier(.2,.8,.2,1)}
+.stellar-chat-drawer.is-resizing{transition:none}
+.stellar-chat-drawer-handle{height:22px;width:100%;flex-shrink:0;display:flex;align-items:center;justify-content:center;touch-action:none;cursor:ns-resize;outline:none}
+.stellar-chat-drawer-handle:before{content:'';height:3px;width:34px;border-radius:2px;background:#b8c0cc}
+.stellar-chat-drawer-handle:focus-visible:before{background:#1877f2}
+.stellar-chat-drawer-body{display:flex;flex:1;min-height:0;flex-direction:column;overflow:hidden}
+.stellar-chat-drawer-body>.stellar-chat-stickers{flex-shrink:0;max-height:84px;padding-top:0;padding-bottom:5px}
+.stellar-chat-drawer-body>[aria-label="表情与贴纸面板"]{height:auto!important;flex:1;min-height:0;border-top:1px solid #e4e6eb;box-shadow:none}
+.stellar-chat-drawer-body>[aria-label="表情与贴纸面板"]>div:first-child{display:none}
+.stellar-chat-drawer-body>#chat-extension-tools-drawer{flex:1;min-height:0;overflow:auto;border-top:0;padding-top:4px}
+.dark .stellar-chat-drawer,.dark .bump-canvas-menu,.dark .bump-canvas-precision{background:#242526eb;border-color:#3a3b3c}
+.dark .bump-precision-control output{color:#d2d8e1}
+.bump-style-canvas-picker{background:#f4f6fad6;backdrop-filter:blur(14px);transform-origin:50% calc(100% - 74px);animation:stellar-chat-style-in .24s cubic-bezier(.2,.8,.2,1)}
+@keyframes stellar-canvas-tools-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+@keyframes stellar-chat-style-in{from{opacity:0;transform:translateY(32px) scale(.86)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.bump-canvas-menu,.bump-style-canvas-picker{animation:none}.bump-canvas-trash,.stellar-chat-drawer{transition:none}}

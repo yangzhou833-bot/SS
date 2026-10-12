@@ -1,0 +1,30 @@
+.star-card-marker{position:relative;width:76px;height:160px;display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none;transform-origin:50% 100%;transition:transform .3s cubic-bezier(.22,.78,.3,1),opacity .3s ease}
+.star-card-surface{position:relative;width:76px;height:152px;flex:none;background:var(--stellar-surface,#fff);border-radius:10px;box-shadow:0 3px 0 #cdd8e5,0 7px 11px #172b4d30,0 16px 24px #172b4d22;transition:box-shadow .2s}
+.star-card-marker:hover .star-card-surface{box-shadow:0 3px 0 #cdd8e5,0 10px 16px #172b4d38,0 20px 28px #172b4d24}
+.star-card-photo{width:100%;height:100%;display:block;object-fit:cover;border-radius:10px;padding:0;border:0}
+.star-card-author{position:absolute;top:-8px;left:-8px;width:28px;height:28px;object-fit:cover;border-radius:50%;box-shadow:0 2px 7px #172b4d35;z-index:2}
+.star-card-date{position:absolute;right:-8px;top:-8px;display:flex;flex-direction:column;width:28px;height:28px;background:#fff;color:#172039;font-family:-apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;border-radius:5px;box-shadow:0 3px 8px #172b4d38;z-index:2;overflow:hidden;transform:rotate(-10deg);text-align:center}
+.star-card-month{height:11px;line-height:11px;background:#ff4278;color:#fff;font-size:7px;font-weight:800}.star-card-day{height:17px;line-height:17px;font-size:13px;font-weight:850}
+.star-card-tip{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:8px solid var(--stellar-surface,#fff);filter:drop-shadow(0 3px 2px #172b4d25)}
+.star-card-location{position:absolute;top:100%;left:50%;transform:translateX(-50%);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:6px;padding:2px 5px;background:#ffffffee;border-radius:6px;color:#1C1E21;font:700 9px -apple-system,BlinkMacSystemFont,'PingFang SC',sans-serif;box-shadow:0 3px 8px #172b4d20}
+.star-card-text{height:100%;padding:18px 6px 8px;display:flex;flex-direction:column;justify-content:center;gap:6px;color:#1C1E21;border:1px solid #E4E6EB;border-radius:6px;font-size:10px;line-height:1.35;overflow:hidden;background:#fff}
+.star-card-text>span{font-size:18px}.star-card-text p{display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;margin:0}
+.star-card-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:24px;height:24px;background:#ffffffeb;border-radius:50%;color:#1877F2;box-shadow:0 2px 8px #172b4d30;font-size:11px}
+.star-card-detail{box-shadow:0 4px 0 #d2dae7,0 18px 45px #12264d3d,0 38px 80px #12264d30}
+@media(prefers-reduced-motion:reduce){.star-card-marker,.star-card-surface{transition:none}.star-card-marker:hover .star-card-surface{translate:0 0}}
+
+/* Life coordinates show one themed emoji; photos stay in the quick-card carousel. */
+.place-theme-marker{position:relative;width:44px;height:44px;display:grid;place-items:center;cursor:pointer;user-select:none;border-radius:50%;transform-origin:center;transition:transform .25s ease,opacity .25s ease}
+.place-theme-emoji{display:block;font-size:34px;line-height:1;filter:drop-shadow(0 3px 3px #172b4d55);transition:filter .2s}
+.place-theme-marker.is-selected{outline:2px solid #9757f5;outline-offset:2px}
+.place-theme-marker.is-selected .place-theme-emoji{filter:drop-shadow(0 3px 3px #172b4d55) drop-shadow(0 0 6px #9757f599)}
+.place-theme-marker:hover .place-theme-emoji{filter:drop-shadow(0 4px 5px #172b4d70)}
+.custom-leaflet-life-place-marker:focus-visible .place-theme-marker,.custom-leaflet-my-marker:focus-visible .place-theme-marker,.custom-leaflet-star-card-marker:focus-visible .star-card-surface{outline:3px solid #9757f5;outline-offset:3px}
+.dark-map .place-theme-emoji{filter:drop-shadow(0 3px 4px #0009) drop-shadow(0 0 2px #ffffff50)}
+.dark-map .place-theme-marker.is-selected .place-theme-emoji{filter:drop-shadow(0 3px 4px #0009) drop-shadow(0 0 6px #b686ff)}
+.dark-map .star-card-location,.dark .star-card-location{background:#182231ed;color:#f4f7fc}
+.dark-map .star-card-text{background:#243246;color:#f4f7fc}.dark-map .star-card-tip{border-top-color:#182231}
+/* Keep photo and avatar widths explicit above Leaflet's marker-image reset. */
+.leaflet-container .leaflet-marker-pane .star-card-photo{width:100%}
+.leaflet-container .leaflet-marker-pane .star-card-author{width:28px}
+@media(prefers-reduced-motion:reduce){.place-theme-marker,.place-theme-emoji{transition:none}}

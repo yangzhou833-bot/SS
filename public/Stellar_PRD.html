@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stellar 应用产品需求文档 (PRD) - 官方完整版</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown.min.css">
+  <style>
+    :root {
+      --primary: #1877F2;
+      --primary-hover: #166FE5;
+      --bg: #F0F2F5;
+      --text: #050505;
+      --secondary: #65676B;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    .header-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #E4E6EB;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 900;
+      font-size: 16px;
+    }
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+    .brand-badge {
+      background: #E7F3FF;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      border: none;
+    }
+    .btn:active {
+      transform: scale(0.96);
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(24, 119, 242, 0.35);
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-secondary {
+      background: #E4E6EB;
+      color: var(--text);
+    }
+    .btn-secondary:hover {
+      background: #D8DADF;
+    }
+    .container {
+      max-width: 960px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+    .card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+      border: 1px solid #E4E6EB;
+    }
+    .markdown-body {
+      font-family: inherit !important;
+      color: var(--text) !important;
+      font-size: 15px !important;
+      line-height: 1.68 !important;
+    }
+    .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+      border-bottom: 1px solid #E4E6EB !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.4px;
+    }
+    .markdown-body h1 {
+      font-size: 26px !important;
+      color: var(--primary) !important;
+      border-bottom: 2px solid var(--primary) !important;
+      padding-bottom: 12px;
+    }
+    .markdown-body h2 {
+      font-size: 20px !important;
+      margin-top: 36px !important;
+      padding-bottom: 8px;
+    }
+    .markdown-body table {
+      width: 100% !important;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #E4E6EB !important;
+    }
+    .markdown-body table th {
+      background: #F0F2F5 !important;
+      color: #050505 !important;
+      font-weight: 700 !important;
+    }
+    .markdown-body table td, .markdown-body table th {
+      padding: 10px 14px !important;
+      border: 1px solid #E4E6EB !important;
+    }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(5, 5, 5, 0.9);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 999;
+      opacity: 0;
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    @media (max-width: 640px) {
+      .card { padding: 24px 16px; border-radius: 16px; }
+      .header-bar { padding: 10px 14px; }
+      .brand-title { font-size: 14px; }
+      .btn { padding: 6px 12px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Bar -->
+  <div class="header-bar">
+    <div class="brand">
+      <div class="brand-icon">S</div>
+      <div class="brand-title">Stellar PRD 知识库</div>
+      <span class="brand-badge">V6.2 官方基线</span>
+    </div>
+    <div class="actions">
+      <button class="btn btn-secondary" onclick="copyMarkdown()">📋 复制全文</button>
+      <button class="btn btn-secondary" onclick="window.print()">🖨️ 打印 / 保存 PDF</button>
+      <a class="btn btn-secondary" href="./Stellar_PRD.md" download="Stellar_PRD_V6.5.md">📄 下载 .md</a>
+      <a class="btn btn-primary" href="./Stellar_PRD.docx" download="Stellar_PRD_V6.5.docx">📝 下载 Word (.docx)</a>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="container">
+    <div class="card">
+      <div id="content" class="markdown-body">
+        <div style="text-align:center; padding: 40px; color: #65676B;">正在加载完整需求文档...</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">已复制到剪贴板 🎉</div>
+
+  <script>
+    let rawMarkdown = '';
+
+    async function loadPRD() {
+      try {
+        const res = await fetch('./Stellar_PRD.md');
+        rawMarkdown = await res.text();
+        document.getElementById('content').innerHTML = marked.parse(rawMarkdown);
+      } catch (err) {
+        document.getElementById('content').innerHTML = '<p style="color:red;">加载文档失败，请直接点击右上角下载源文件。</p>';
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    function copyMarkdown() {
+      if (!rawMarkdown) return;
+      navigator.clipboard.writeText(rawMarkdown).then(() => {
+        showToast('✅ 已成功复制 PRD Markdown 源码全文！');
+      });
+    }
+
+    window.onload = loadPRD;
+  </script>
+</body>
+</html>

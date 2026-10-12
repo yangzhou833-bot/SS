@@ -1,0 +1,2429 @@
+
+
+/* Map social-state motion: reuse existing markers and controls only. */
+.map-social-layer,
+.custom-leaflet-marker,
+.custom-leaflet-cluster-marker,
+.custom-leaflet-activity-marker,
+.custom-leaflet-activity-aggregation-marker,
+.custom-leaflet-star-card-marker,
+.custom-leaflet-transit-marker {
+  transition: opacity 220ms ease, filter 220ms ease, transform 320ms cubic-bezier(.22, 1, .36, 1);
+  will-change: transform, opacity;
+}
+.map-social-layer.is-updating {
+  transition-duration: 720ms;
+}
+.map-social-layer.is-stale {
+  opacity: .68;
+  filter: saturate(.72);
+}
+.map-social-layer.is-stealth {
+  opacity: 0;
+  filter: blur(8px);
+  pointer-events: none;
+}
+.map-social-layer.is-selected {
+  transform: scale(1.12);
+}
+.map-social-pulse {
+  animation: stellar-social-pulse 900ms cubic-bezier(.22, 1, .36, 1);
+}
+@keyframes stellar-social-pulse {
+  0% { opacity: .25; transform: scale(.78); }
+  55% { opacity: .9; transform: scale(1.08); }
+  100% { opacity: 0; transform: scale(1.36); }
+}
+
+/* Avatar Aggregation Keyframes & Animations (全体人员到齐头像聚合动效) */
+@keyframes avatarCentripetalGather {
+  0% {
+    transform: scale(0.4) translate(var(--tx, 0px), var(--ty, 0px));
+    opacity: 0.2;
+    filter: blur(4px);
+  }
+  60% {
+    transform: scale(1.15) translate(calc(var(--tx, 0px) * 0.15), calc(var(--ty, 0px) * 0.15));
+    opacity: 0.95;
+    filter: blur(0px);
+  }
+  100% {
+    transform: scale(1) translate(0px, 0px);
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@keyframes avatarAggregationHalo {
+  0% {
+    box-shadow: 0 0 0 0 rgba(24, 119, 242, 0.45);
+    border-color: #1877F2;
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(24, 119, 242, 0);
+    border-color: #10B981;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(24, 119, 242, 0);
+    border-color: #1877F2;
+  }
+}
+
+@keyframes avatarOrbitDrift {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.avatar-gather-anim {
+  animation: avatarCentripetalGather 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.avatar-halo-pulse {
+  animation: avatarAggregationHalo 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map-social-layer,
+  .custom-leaflet-marker,
+  .custom-leaflet-cluster-marker,
+  .custom-leaflet-activity-marker,
+  .custom-leaflet-star-card-marker,
+  .custom-leaflet-transit-marker {
+    transition-duration: 1ms;
+    animation-duration: 1ms;
+  }
+}
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Universal Scrollbar Removal - Clean Mobile & Desktop App Experience (删除滑动条) */
+* {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+*::-webkit-scrollbar,
+::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+:root {
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+  --sal: env(safe-area-inset-left, 0px);
+  --sar: env(safe-area-inset-right, 0px);
+}
+
+/* GPU Hardware Acceleration & will-change optimizations */
+.gpu-layer {
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+.will-change-transform-opacity {
+  will-change: transform, opacity;
+}
+
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.breathing-halo {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  contain: layout paint;
+}
+
+.map-bubble-layer {
+  transform: translate3d(0, 0, 0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  isolation: isolate;
+}
+
+@keyframes rainDrop {
+  0% {
+    transform: translate3d(0, -20px, 0);
+  }
+  100% {
+    transform: translate3d(0, 100vh, 0);
+  }
+}
+
+@keyframes snowFlake {
+  0% {
+    transform: translate3d(0, -20px, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(25px, 50vh, 0) rotate(180deg);
+  }
+  100% {
+    transform: translate3d(-15px, 105vh, 0) rotate(360deg);
+  }
+}
+
+@keyframes driftCloud {
+  0% {
+    transform: translate3d(-250px, 0, 0);
+  }
+  100% {
+    transform: translate3d(calc(100vw + 300px), 0, 0);
+  }
+}
+
+.animate-rain-drop {
+  animation: rainDrop linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.animate-snow-flake {
+  animation: snowFlake ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.animate-drift-cloud {
+  animation: driftCloud linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Glass Card Weather Effects */
+@keyframes glassRainSlide {
+  0% {
+    transform: translateY(-8px) scale(0.85);
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(220px) scale(1.15);
+    opacity: 0;
+  }
+}
+
+@keyframes glassSunShimmer {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.45;
+  }
+  50% {
+    transform: rotate(12deg) scale(1.18);
+    opacity: 0.8;
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.45;
+  }
+}
+
+@keyframes glassSunSweep {
+  0% {
+    transform: translateX(-100%) rotate(25deg);
+  }
+  50% {
+    transform: translateX(180%) rotate(25deg);
+  }
+  100% {
+    transform: translateX(180%) rotate(25deg);
+  }
+}
+
+.animate-glass-rain-slide {
+  animation: glassRainSlide 3.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-glass-sun-shimmer {
+  animation: glassSunShimmer 5.5s ease-in-out infinite;
+}
+
+.animate-glass-sun-sweep {
+  animation: glassSunSweep 5s ease-in-out infinite;
+}
+
+@keyframes bounceSpring {
+  0% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+  30% {
+    transform: translate3d(-50%, -65%, 0) scale(1.3);
+  }
+  50% {
+    transform: translate3d(-50%, -48%, 0) scale(0.92);
+  }
+  75% {
+    transform: translate3d(-50%, -54%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+}
+
+.animate-bounce-spring {
+  animation: bounceSpring 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Leaflet pane z-index hierarchy and marker layers */
+.leaflet-pane {
+  z-index: 10 !important;
+}
+
+.leaflet-tile-pane {
+  z-index: 5 !important;
+}
+
+.leaflet-overlay-pane {
+  z-index: 15 !important;
+}
+
+.leaflet-shadow-pane {
+  z-index: 20 !important;
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.leaflet-marker-pane {
+  z-index: 30 !important;
+}
+
+.leaflet-tooltip-pane {
+  z-index: 35 !important;
+}
+
+.leaflet-popup-pane {
+  z-index: 40 !important;
+}
+
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 25 !important;
+}
+
+.custom-leaflet-marker,
+.custom-leaflet-cluster-marker,
+.custom-leaflet-activity-marker,
+.leaflet-marker-icon {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.25s ease-out !important;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* Ensure avatar images completely fill the circular avatar frame with no gaps */
+.custom-leaflet-marker img,
+.custom-leaflet-cluster-marker img,
+.custom-leaflet-activity-marker img {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+.active-gradient-static-frame {
+  position: relative;
+  background: #1877F2;
+  padding: 2px;
+  border-radius: 8px;
+}
+
+@keyframes breatheScale {
+  0%, 100% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.03, 1.03, 1);
+  }
+}
+
+.animate-breathe-scale {
+  animation: breatheScale 3s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@keyframes breathe {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-breathe {
+  animation: breathe 2s ease-in-out infinite;
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
+@keyframes metaBreathingGlow {
+  0%, 100% {
+    border-color: rgba(24, 119, 242, 0.85);
+  }
+  50% {
+    border-color: rgba(24, 119, 242, 0.35);
+  }
+}
+
+@keyframes metaIconPulse {
+  0%, 100% {
+    transform: scale3d(1, 1, 1);
+  }
+  50% {
+    transform: scale3d(1.08, 1.08, 1);
+  }
+}
+
+.animate-meta-breathe {
+  animation: metaBreathingGlow 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: border-color;
+  transform: translateZ(0);
+}
+
+.animate-meta-icon-pulse {
+  animation: metaIconPulse 2s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+@keyframes unifiedBreathe {
+  0%, 100% {
+    border-color: rgba(24, 119, 242, 1);
+  }
+  50% {
+    border-color: rgba(24, 119, 242, 0.45);
+  }
+}
+
+.animate-unified-breathe {
+  animation: unifiedBreathe 2s ease-in-out infinite;
+  will-change: border-color;
+  transform: translateZ(0);
+}
+
+@keyframes cosmicHaloPulse {
+  0%, 100% {
+    transform: scale3d(1, 1, 1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale3d(1.08, 1.08, 1);
+    opacity: 1;
+  }
+}
+
+.animate-cosmic-pulse {
+  animation: cosmicHaloPulse 3s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+@keyframes particleDissipate {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-65px, 90px, 0) scale(0.3);
+    opacity: 0;
+  }
+}
+
+.animate-particle-dissipate {
+  animation: particleDissipate 0.4s ease-out forwards;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+@keyframes spinSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spinSlow 12s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Friend In-Map Navigation Dynamic Particle & Trail Keyframes */
+@keyframes friendStarBurst {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.3) rotate(0deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+    transform: translate3d(var(--tx, -12px), var(--ty, -16px), 0) scale(1.15) rotate(45deg);
+  }
+  60% {
+    opacity: 0.85;
+    transform: translate3d(calc(var(--tx, -12px) * 1.8), calc(var(--ty, -16px) * 1.8), 0) scale(0.95) rotate(90deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--tx, -12px) * 2.4), calc(var(--ty, -16px) * 2.4), 0) scale(0.4) rotate(160deg);
+  }
+}
+
+@keyframes friendHeartFloat {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.4);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.95;
+    transform: translate3d(var(--tx, -10px), var(--ty, -14px), 0) scale(1.1);
+  }
+  65% {
+    opacity: 0.75;
+    transform: translate3d(calc(var(--tx, -10px) * 1.7), calc(var(--ty, -14px) * 1.7 - 8px), 0) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--tx, -10px) * 2.3), calc(var(--ty, -14px) * 2.3 - 16px), 0) scale(0.5);
+  }
+}
+
+@keyframes friendWarmHalo {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+
+@keyframes friendDotTrail {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+@keyframes pulseArrivalCelebration {
+  0% {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.9;
+  }
+  60% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes routeFlowDash {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+/* Purple breathing pulse ring for map avatar selection */
+@keyframes purpleBreath {
+  0%, 100% {
+    border-color: #9333ea;
+    box-shadow: 0 0 14px rgba(147, 51, 234, 0.5), 0 0 0 3.5px rgba(147, 51, 234, 0.7);
+  }
+  50% {
+    border-color: #c084fc;
+    box-shadow: 0 0 32px rgba(168, 85, 247, 0.95), 0 0 0 7px rgba(192, 132, 252, 0.85);
+  }
+}
+
+.animate-purple-breath {
+  animation: purpleBreath 1.8s ease-in-out infinite;
+}
+
+@keyframes stickerFloat1 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-3.5px) rotate(3deg); }
+}
+
+@keyframes stickerFloat2 {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(-3deg); }
+}
+
+.animate-sticker-float-1 {
+  animation: stickerFloat1 3.2s ease-in-out infinite;
+}
+
+.animate-sticker-float-2 {
+  animation: stickerFloat2 2.8s ease-in-out infinite;
+}
+
+.animate-nav-star-1 {
+  --tx: -14px;
+  --ty: -18px;
+  animation: friendStarBurst 1.2s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+}
+
+.animate-nav-star-2 {
+  --tx: 14px;
+  --ty: -16px;
+  animation: friendStarBurst 1.4s cubic-bezier(0.2, 0.8, 0.4, 1) 0.3s infinite;
+}
+
+.animate-nav-star-3 {
+  --tx: 0px;
+  --ty: -22px;
+  animation: friendStarBurst 1.1s cubic-bezier(0.2, 0.8, 0.4, 1) 0.6s infinite;
+}
+
+.animate-nav-heart-1 {
+  --tx: -12px;
+  --ty: -14px;
+  animation: friendHeartFloat 1.3s ease-out infinite;
+}
+
+.animate-nav-heart-2 {
+  --tx: 12px;
+  --ty: -12px;
+  animation: friendHeartFloat 1.5s ease-out 0.4s infinite;
+}
+
+.animate-nav-warm-halo {
+  animation: friendWarmHalo 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-arrival-celebration {
+  animation: pulseArrivalCelebration 1.8s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+}
+
+.animate-route-flow {
+  stroke-dasharray: 8 8;
+  animation: routeFlowDash 1.2s linear infinite;
+}
+
+/* Reduced motion fallback for low-end or battery-saving modes */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Overhead Map Heart & Emoji Floating Bubble Animation */
+@keyframes overheadBubblePop {
+  0% {
+    transform: translate3d(-50%, 0, 0) scale(0.2);
+    opacity: 0;
+  }
+  20% {
+    transform: translate3d(-50%, -24px, 0) scale(1.25);
+    opacity: 1;
+  }
+  40% {
+    transform: translate3d(-50%, -36px, 0) scale(1.05);
+    opacity: 1;
+  }
+  75% {
+    transform: translate3d(-50%, -58px, 0) scale(1.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate3d(-50%, -80px, 0) scale(0.85);
+    opacity: 0;
+  }
+}
+
+.animate-overhead-bubble {
+  animation: overheadBubblePop 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* =========================================================================
+   ZENLY STYLE INTERACTIVE ANIMATIONS & DYNAMICS
+   ========================================================================= */
+
+@keyframes zenlyJellyBounce {
+  0% {
+    transform: translate3d(-50%, -50%, 0) scale(1, 1);
+  }
+  25% {
+    transform: translate3d(-50%, -62%, 0) scale(0.88, 1.18);
+  }
+  50% {
+    transform: translate3d(-50%, -46%, 0) scale(1.14, 0.88);
+  }
+  75% {
+    transform: translate3d(-50%, -52%, 0) scale(0.96, 1.05);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(1, 1);
+  }
+}
+
+.animate-zenly-jelly {
+  animation: zenlyJellyBounce 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  will-change: transform;
+}
+
+@keyframes zenlyPulseWave {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+.animate-zenly-pulse-wave {
+  animation: zenlyPulseWave 2.4s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes zenlySpeedTrail {
+  0%, 100% {
+    transform: translateX(0) scale(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: translateX(-3px) scale(1.05);
+    opacity: 1;
+  }
+}
+
+.animate-zenly-speed {
+  animation: zenlySpeedTrail 1.2s ease-in-out infinite;
+}
+
+@keyframes zenlyBumpImpact {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.4) rotate(-8deg);
+  }
+  60% {
+    transform: scale(0.9) rotate(5deg);
+  }
+  85% {
+    transform: scale(1.1) rotate(-2deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.animate-zenly-bump {
+  animation: zenlyBumpImpact 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+@keyframes zenlyComboScale {
+  0% {
+    transform: scale(0.4) rotate(-15deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.3) rotate(8deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-zenly-combo {
+  animation: zenlyComboScale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Pure Arcade Game Style Emoji Combo Floating Text (无背景气泡纯游戏动效) */
+@keyframes gameComboPop {
+  0% {
+    transform: translate3d(-50%, 0, 0) scale(0.3) rotate(-14deg);
+    opacity: 0;
+  }
+  20% {
+    transform: translate3d(-50%, -18px, 0) scale(1.45) rotate(6deg);
+    opacity: 1;
+  }
+  45% {
+    transform: translate3d(-50%, -36px, 0) scale(1.22) rotate(-3deg);
+    opacity: 1;
+  }
+  75% {
+    transform: translate3d(-50%, -64px, 0) scale(1.08) rotate(0deg);
+    opacity: 0.95;
+  }
+  100% {
+    transform: translate3d(-50%, -95px, 0) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.animate-game-combo-pop {
+  animation: gameComboPop 1.35s cubic-bezier(0.18, 0.89, 0.32, 1.2) forwards;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+@keyframes gameComboBurst {
+  0% {
+    transform: scale(0.2) rotate(-20deg);
+    opacity: 0;
+  }
+  30% {
+    transform: scale(1.5) rotate(8deg);
+    opacity: 1;
+  }
+  65% {
+    transform: scale(1.2) rotate(-4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9) translateY(-40px);
+    opacity: 0;
+  }
+}
+
+.animate-game-combo-burst {
+  animation: gameComboBurst 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes zenlyTogetherGathering {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+.animate-zenly-together {
+  animation: zenlyTogetherGathering 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* =========================================================================
+   USER LOCATION BLUE DOT & PULSE RING (蓝点 #0B6BFF 静止轻微浮动 / 扩散脉冲环 2s scale 1->2 opacity 1->0)
+   ========================================================================= */
+@keyframes userBlueDotFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-2.5px);
+  }
+}
+
+.animate-blue-dot-float {
+  animation: userBlueDotFloat 2.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes userPulseRingLoop {
+  0% {
+    transform: scale(1);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-user-pulse-ring {
+  animation: userPulseRingLoop 2s cubic-bezier(0.2, 0.8, 0.35, 1) infinite;
+  will-change: transform, opacity;
+}
+
+/* Friend Bubble Online Breathe: scale 1 <-> 1.05, 2s infinite (online only) */
+@keyframes friendOnlineBreathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-friend-online-breathe {
+  animation: friendOnlineBreathe 2s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* New Friend Online Spring In + Green Ring Flash Once */
+@keyframes friendSpringIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes greenFlashRing {
+  0% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-friend-spring-in {
+  animation: friendSpringIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  will-change: transform, opacity;
+}
+
+.animate-green-flash-once {
+  animation: greenFlashRing 1.2s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Emoji Pop Bounce (Overshoot 1.3) */
+@keyframes emojiBounceOvershoot {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  45% {
+    transform: scale(1.3);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.92);
+  }
+  85% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-emoji-overshoot {
+  animation: emojiBounceOvershoot 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  will-change: transform, opacity;
+}
+
+/* Ghost Mode Transition */
+.ghost-mode-shrink {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Smooth Position Update Transition: 0.6s ease */
+.smooth-map-marker-transition {
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), left 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), top 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  position: fixed;
+  inset: 0;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  background-color: #ffffff;
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 0.4s Smooth Cross-fade Transition for Dark Mode & Theme Switch */
+.theme-crossfade,
+.theme-crossfade * {
+  transition-property: background-color, border-color, color, fill, stroke, box-shadow, filter;
+  transition-duration: 0.4s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Map Tile 0.4s Cross-fade Layer Transition */
+.leaflet-tile {
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Dark Mode Palette Overrides */
+.dark body,
+.dark #root {
+  background-color: #121316;
+  color: #E4E6EB;
+}
+
+/* Power Saver Mode & Respect System Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.power-saver-mode *,
+.power-saver-mode ::before,
+.power-saver-mode ::after {
+  animation-play-state: paused !important;
+  animation-iteration-count: 1 !important;
+  will-change: auto !important;
+}
+
+.power-saver-mode .animate-ping,
+.power-saver-mode .animate-pulse,
+.power-saver-mode .animate-bounce,
+.power-saver-mode .animate-spin,
+.power-saver-mode .animate-rain-drop,
+.power-saver-mode .animate-snow-flake,
+.power-saver-mode .animate-drift-cloud,
+.power-saver-mode .animate-breathe,
+.power-saver-mode .animate-zenly-speed,
+.power-saver-mode .animate-zenly-together,
+.power-saver-mode .beacon-geofence-50m-circle,
+.power-saver-mode .beacon-geofence-50m-pulse {
+  animation: none !important;
+}
+
+/* -------------------------------------------------------------
+   Course Beacon 50m Geofence Breathing Aperture Animation (.leaflet-container)
+   课程灯塔 50m 围栏平滑呼吸式光圈动画及入圈显著视觉反馈
+   ------------------------------------------------------------- */
+@keyframes beaconFenceBreathing {
+  0% {
+    stroke-opacity: 0.95;
+    fill-opacity: 0.28;
+    stroke-width: 3.2px;
+  }
+  50% {
+    stroke-opacity: 0.42;
+    fill-opacity: 0.08;
+    stroke-width: 1.6px;
+  }
+  100% {
+    stroke-opacity: 0.95;
+    fill-opacity: 0.28;
+    stroke-width: 3.2px;
+  }
+}
+
+@keyframes beaconFenceBreathingSmooth {
+  0%, 100% {
+    transform: scale(0.96);
+    opacity: 0.45;
+    box-shadow: 0 0 0 0 rgba(24, 119, 242, 0.4), 0 0 16px rgba(24, 119, 242, 0.25);
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.9;
+    box-shadow: 0 0 0 16px rgba(24, 119, 242, 0), 0 0 32px rgba(24, 119, 242, 0.55);
+  }
+}
+
+@keyframes beaconStudentEntryResonance {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.8;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.95), 0 0 32px rgba(16, 185, 129, 0.9);
+  }
+  35% {
+    transform: scale(1.2);
+    opacity: 1;
+    box-shadow: 0 0 0 28px rgba(16, 185, 129, 0.35), 0 0 48px rgba(24, 119, 242, 0.85);
+  }
+  70% {
+    transform: scale(1.04);
+    opacity: 0.92;
+    box-shadow: 0 0 0 42px rgba(16, 185, 129, 0), 0 0 36px rgba(16, 185, 129, 0.4);
+  }
+  100% {
+    transform: scale(1.0);
+    opacity: 0.85;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0), 0 0 24px rgba(24, 119, 242, 0.35);
+  }
+}
+
+@keyframes beaconApertureWave {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1.85);
+    opacity: 0;
+  }
+}
+
+@keyframes beaconRadarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.beacon-fence-aperture-breathing {
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation: beaconFenceBreathingSmooth 3.2s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+.beacon-fence-entry-active {
+  transition: transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation: beaconStudentEntryResonance 1.8s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+.beacon-aperture-wave {
+  animation: beaconApertureWave 2s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+.beacon-radar-sweep {
+  animation: beaconRadarSweep 4s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes beaconFencePulseRing {
+  0% {
+    stroke-opacity: 0.85;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-opacity: 0.35;
+    stroke-dashoffset: 24;
+  }
+  100% {
+    stroke-opacity: 0.85;
+    stroke-dashoffset: 48;
+  }
+}
+
+.leaflet-container {
+  background-color: #f0f2f5 !important;
+  outline: none !important;
+}
+
+.dark .leaflet-container,
+.leaflet-container.dark-map {
+  background-color: #18191a !important;
+  box-shadow: none !important;
+  background-image: none !important;
+  filter: none !important;
+}
+
+.leaflet-container.dark-map::after,
+.leaflet-container.dark-map::before,
+.dark .leaflet-container::after,
+.dark .leaflet-container::before {
+  display: none !important;
+  content: none !important;
+}
+
+.leaflet-shadow-pane,
+.leaflet-marker-shadow,
+.leaflet-pane > .leaflet-shadow-pane,
+.leaflet-pane img.leaflet-tile {
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.leaflet-shadow-pane,
+.leaflet-marker-shadow,
+.leaflet-pane > .leaflet-shadow-pane {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.leaflet-container .beacon-geofence-50m-circle {
+  stroke: #10B981 !important;
+  fill: #10B981 !important;
+  stroke-width: 1.5px !important;
+  fill-opacity: 0.12 !important;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.leaflet-container .beacon-geofence-50m-pulse {
+  stroke: #06B6D4 !important;
+  stroke-width: 1px !important;
+  pointer-events: none;
+}
+
+/* Dark mode high-contrast vivid neon overrides for Leaflet container */
+.dark .leaflet-container .beacon-geofence-50m-circle,
+.leaflet-container.dark-map .beacon-geofence-50m-circle {
+  stroke: #34D399 !important;
+  fill: #10B981 !important;
+  stroke-width: 1.5px !important;
+  fill-opacity: 0.15 !important;
+}
+
+.dark .leaflet-container .beacon-geofence-50m-pulse,
+.leaflet-container.dark-map .beacon-geofence-50m-pulse {
+  stroke: #22D3EE !important;
+  stroke-width: 1px !important;
+}
+
+/* ADD: Lover Breathing & Relationship CSS Animations */
+@keyframes loverBreathing {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-lover-breathe {
+  animation: loverBreathing 2s ease-in-out infinite;
+}
+
+/* ADD: Interactive Enlarged Avatar Spring Pop Animation */
+@keyframes avatarPopBurst {
+  0% {
+    transform: translate3d(-50%, -50%, 0) scale(0.85);
+  }
+  40% {
+    transform: translate3d(-50%, -50%, 0) scale(1.22);
+  }
+  65% {
+    transform: translate3d(-50%, -50%, 0) scale(0.96);
+  }
+  85% {
+    transform: translate3d(-50%, -50%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+}
+
+.animate-avatar-pop-burst {
+  animation: avatarPopBurst 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  will-change: transform;
+}
+
+/* ADD: Interactive Enlarged Avatar Orbit Ring Animations */
+@keyframes orbitRingAroundAvatar {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes orbitCounterRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+.animate-orbit-ring-container {
+  animation: orbitRingAroundAvatar 12s linear infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.animate-counter-rotate {
+  animation: orbitCounterRotate 12s linear infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* -------------------------------------------------------------
+   Lover Clay Car Driving & Love Heart Exhaust Bubble Animations
+   ------------------------------------------------------------- */
+@keyframes clayCarDriveBob {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate3d(0, -2px, 0) rotate(0.8deg);
+  }
+  50% {
+    transform: translate3d(0, 0.5px, 0) rotate(-0.5deg);
+  }
+  75% {
+    transform: translate3d(0, -1.5px, 0) rotate(0.4deg);
+  }
+}
+
+.animate-clay-car-bob {
+  animation: clayCarDriveBob 1.6s ease-in-out infinite;
+  transform-origin: bottom center;
+  will-change: transform;
+}
+
+@keyframes clayHeartBillow1 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.4) rotate(0deg);
+  }
+  20% {
+    opacity: 0.95;
+    transform: translate3d(-10px, -8px, 0) scale(1) rotate(-8deg);
+  }
+  60% {
+    opacity: 0.9;
+    transform: translate3d(-24px, -20px, 0) scale(1.15) rotate(6deg);
+  }
+  85% {
+    opacity: 0.6;
+    transform: translate3d(-36px, -32px, 0) scale(1.05) rotate(-4deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-46px, -44px, 0) scale(0.8) rotate(12deg);
+  }
+}
+
+@keyframes clayHeartBillow2 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.3) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+    transform: translate3d(-12px, -6px, 0) scale(0.9) rotate(10deg);
+  }
+  70% {
+    opacity: 0.85;
+    transform: translate3d(-28px, -24px, 0) scale(1.1) rotate(-10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-48px, -40px, 0) scale(0.7) rotate(8deg);
+  }
+}
+
+@keyframes clayHeartBillow3 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.4) rotate(0deg);
+  }
+  30% {
+    opacity: 0.95;
+    transform: translate3d(-8px, -12px, 0) scale(1.05) rotate(-12deg);
+  }
+  75% {
+    opacity: 0.8;
+    transform: translate3d(-22px, -30px, 0) scale(1.18) rotate(4deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-38px, -50px, 0) scale(0.85) rotate(-6deg);
+  }
+}
+
+@keyframes clayHeartBillow4 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.3) rotate(0deg);
+  }
+  20% {
+    opacity: 0.9;
+    transform: translate3d(-14px, -10px, 0) scale(0.85) rotate(14deg);
+  }
+  65% {
+    opacity: 0.75;
+    transform: translate3d(-32px, -22px, 0) scale(1) rotate(-8deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-52px, -36px, 0) scale(0.6) rotate(16deg);
+  }
+}
+
+@keyframes clayHeartBillow5 {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.5) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+    transform: translate3d(-6px, -14px, 0) scale(1.2) rotate(6deg);
+  }
+  70% {
+    opacity: 0.8;
+    transform: translate3d(-18px, -34px, 0) scale(1.25) rotate(-10deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-30px, -54px, 0) scale(0.7) rotate(10deg);
+  }
+}
+
+.animate-clay-heart-1 {
+  animation: clayHeartBillow1 2.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+  will-change: transform, opacity;
+}
+
+.animate-clay-heart-2 {
+  animation: clayHeartBillow2 2.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite 0.45s;
+  will-change: transform, opacity;
+}
+
+.animate-clay-heart-3 {
+  animation: clayHeartBillow3 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite 0.9s;
+  will-change: transform, opacity;
+}
+
+.animate-clay-heart-4 {
+  animation: clayHeartBillow4 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite 1.35s;
+  will-change: transform, opacity;
+}
+
+.animate-clay-heart-5 {
+  animation: clayHeartBillow5 2.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite 1.8s;
+  will-change: transform, opacity;
+}
+
+@keyframes clayHeartGlowPulse {
+  0%, 100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-clay-car-glow {
+  animation: clayHeartGlowPulse 2.5s ease-in-out infinite;
+}
+
+/* -------------------------------------------------------------
+   Custom Leaflet Marker Glassmorphism & Speech Bubble Resets
+   ------------------------------------------------------------- */
+.custom-leaflet-airplane,
+.custom-leaflet-airplane.leaflet-div-icon,
+.custom-leaflet-schedule-dep,
+.custom-leaflet-schedule-dep.leaflet-div-icon,
+.custom-leaflet-schedule-arr,
+.custom-leaflet-schedule-arr.leaflet-div-icon,
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.flight-bubble-glass {
+  background: #ffffff !important;
+  border: 1px solid #E4E6EB !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+/* Flight Status Color-Coding Design System */
+.flight-card-frame {
+  background: #ffffff !important;
+  border: 1px solid #E4E6EB !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  filter: none !important;
+}
+
+.flight-status-ontime {
+  background-color: #ECFDF5 !important;
+  color: #10B981 !important;
+  border: 1px solid #A7F3D0 !important;
+}
+
+.flight-status-delayed {
+  background-color: #FFF1F2 !important;
+  color: #F23B6A !important;
+  border: 1px solid #FECDD3 !important;
+}
+
+.flight-status-cancelled {
+  background-color: #F0F2F5 !important;
+  color: #65676B !important;
+  border: 1px solid #E4E6EB !important;
+}
+
+/* ==========================================================================
+   Stellar Chat Interactive Animations (Restrained, Fast, One-Shot)
+   ========================================================================== */
+
+/* One-shot big emoji pop animation (450ms - 550ms, strictly plays once) */
+@keyframes emojiPopOnce {
+  0% {
+    opacity: 0.2;
+    transform: scale(0.72) translateY(6px);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.18) translateY(-2px);
+  }
+  75% {
+    transform: scale(0.96) translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.anim-emoji-pop-once {
+  animation: emojiPopOnce 500ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Subtle message entry animation (180ms) */
+@keyframes msgEntrySubtle {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.msg-entry-anim {
+  animation: msgEntrySubtle 180ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Reaction Chip toggle/pop (180ms) */
+@keyframes reactionChipPop {
+  0% {
+    transform: scale(0.85);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.reaction-chip-pop {
+  animation: reactionChipPop 180ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Message Reply Jump Highlight (700ms) */
+@keyframes replyHighlightGlow {
+  0% {
+    background-color: rgba(24, 119, 242, 0.18);
+    box-shadow: 0 0 0 2px #1877F2;
+  }
+  60% {
+    background-color: rgba(24, 119, 242, 0.12);
+    box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.8);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 0 rgba(24, 119, 242, 0);
+  }
+}
+
+.msg-highlight-target {
+  animation: replyHighlightGlow 700ms ease-out forwards;
+}
+
+/* Send bubble feedback (120ms) */
+@keyframes sendBubbleFeedback {
+  0% {
+    transform: scale(0.96);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.send-bubble-feedback {
+  animation: sendBubbleFeedback 120ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Telegram-Style Animated Emoji Spring & Bounce */
+@keyframes telegramEmojiBounce {
+  0% {
+    transform: scale(0.3) rotate(-15deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.25) rotate(8deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.92) rotate(-4deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.telegram-emoji-animate {
+  animation: telegramEmojiBounce 600ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes telegramEmojiFloating {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.03);
+  }
+}
+
+.telegram-emoji-float {
+  animation: telegramEmojiFloating 3s ease-in-out infinite;
+}
+
+/* Paper Plane Fly-away Send Feedback (120ms snappy response) */
+@keyframes flyPlaneSnappy {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(8px, -8px) scale(0.85);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(18px, -18px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.animate-fly-plane {
+  animation: flyPlaneSnappy 120ms cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* 64px Single Emoji Dynamic Bubble Entrance & Scale Fallback Keyframes */
+@keyframes emojiBubbleBounce64 {
+  0% {
+    transform: scale(0.3) translateY(12px);
+    opacity: 0;
+  }
+  45% {
+    transform: scale(1.28) translateY(-4px);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.94) translateY(1px);
+    opacity: 1;
+  }
+  85% {
+    transform: scale(1.04) translateY(-1px);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.anim-emoji-bubble-64 {
+  animation: emojiBubbleBounce64 450ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* 200ms Smooth Downward Settle and Fade-in Feedback for Chat Bubbles */
+@keyframes msgBubbleEntry200 {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.msg-bubble-entry-200 {
+  animation: msgBubbleEntry200 200ms cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* ==========================================================================
+   RADIANT BEACON CHARGING & GLOWING BREATHING RHYTHM (考勤大厅发光呼吸渲染)
+   ========================================================================== */
+
+/* 1. Slow, hypnotic respiratory glowing aura for the entire Attendance Hall (3.6s cycle) */
+@keyframes radiantBreatheSlow {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.28), 0 0 32px rgba(251, 191, 36, 0.14), inset 0 0 12px rgba(254, 240, 138, 0.2);
+    border-color: rgba(245, 158, 11, 0.65);
+  }
+  50% {
+    box-shadow: 0 0 32px rgba(245, 158, 11, 0.65), 0 0 60px rgba(251, 191, 36, 0.38), inset 0 0 24px rgba(254, 240, 138, 0.55);
+    border-color: rgba(251, 191, 36, 1);
+  }
+}
+
+.radiant-beacon-breathe-slow {
+  animation: radiantBreatheSlow 3.6s ease-in-out infinite;
+  will-change: box-shadow, border-color;
+}
+
+/* 2. Synchronized gentle glowing breath for secondary UI cards & element borders */
+@keyframes radiantElementBreathe {
+  0%, 100% {
+    border-color: rgba(245, 158, 11, 0.4);
+    box-shadow: 0 0 8px rgba(251, 191, 36, 0.18);
+  }
+  50% {
+    border-color: rgba(245, 158, 11, 0.85);
+    box-shadow: 0 0 18px rgba(251, 191, 36, 0.42);
+  }
+}
+
+.radiant-ui-element-glow {
+  animation: radiantElementBreathe 3.6s ease-in-out infinite;
+  will-change: border-color, box-shadow;
+}
+
+/* 3. High-energy laser surge traveling across charging progress bars */
+@keyframes radiantLaserSurge {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+.animate-radiant-laser {
+  animation: radiantLaserSurge 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* 4. Rotating energy rings around the Radiant Beacon core */
+@keyframes radiantRingRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes radiantRingRotateReverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-radiant-ring {
+  animation: radiantRingRotate 6s linear infinite;
+}
+
+.animate-radiant-ring-fast {
+  animation: radiantRingRotate 2.8s linear infinite;
+}
+
+.animate-radiant-ring-reverse {
+  animation: radiantRingRotateReverse 4.5s linear infinite;
+}
+
+/* 5. Floating upward particle sparks */
+@keyframes radiantSparkleFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-24px) scale(0.4);
+  }
+}
+
+.animate-radiant-sparkle-1 {
+  animation: radiantSparkleFloat 2.4s ease-out infinite;
+}
+
+.animate-radiant-sparkle-2 {
+  animation: radiantSparkleFloat 2.8s ease-out infinite 0.8s;
+}
+
+.animate-radiant-sparkle-3 {
+  animation: radiantSparkleFloat 2.1s ease-out infinite 1.4s;
+}
+
+/* 6. Expanding golden beacon acoustic radar wave */
+@keyframes radiantRadarWave {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.animate-radiant-radar {
+  animation: radiantRadarWave 2.6s cubic-bezier(0.1, 0.4, 0.6, 1) infinite;
+}
+
+/* ==========================================================================
+   Badge Item Unlock Animation (教师荣誉勋章点亮与金色光圈扩散动效)
+   ========================================================================== */
+
+/* 1. 勋章轻微弹性缩放反馈 (Subtle Scale Feedback) */
+@keyframes badgeUnlockScale {
+  0% {
+    transform: scale(1);
+  }
+  28% {
+    transform: scale(1.07);
+  }
+  50% {
+    transform: scale(0.97);
+  }
+  75% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* 2. 图标中心金色光芒脉冲与微旋转 */
+@keyframes badgeIconIgnite {
+  0% {
+    transform: scale(0.85) rotate(-12deg);
+  }
+  35% {
+    transform: scale(1.22) rotate(8deg);
+  }
+  65% {
+    transform: scale(0.95) rotate(-3deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* 3. 第一道金色光圈快速扩散 (Primary Golden Halo Shockwave) */
+@keyframes goldenHaloDiffusePrimary {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.95;
+  }
+  40% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* 4. 第二道金色光圈延时扩散 (Secondary Golden Halo Diffusion) */
+@keyframes goldenHaloDiffuseSecondary {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.85;
+  }
+  60% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+/* 5. 金色高光扫过勋章卡片 (Golden Light Ray Sweep) */
+@keyframes goldenCardSweep {
+  0% {
+    transform: translateX(-120%) skewX(-25deg);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.8;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateX(260%) skewX(-25deg);
+    opacity: 0;
+  }
+}
+
+/* 6. 金色星芒微粒向外迸发 (Golden Sparkle Star Burst) */
+@keyframes goldenSparkleOut {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+    transform: translate(var(--tx, 0), var(--ty, 0)) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(var(--tx, 0) * 1.6), calc(var(--ty, 0) * 1.6)) scale(0.3);
+  }
+}
+
+/* 动效类声明 */
+.animate-badge-unlock-scale {
+  animation: badgeUnlockScale 1.1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  will-change: transform;
+}
+
+.animate-badge-icon-ignite {
+  animation: badgeIconIgnite 0.9s cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  will-change: transform;
+}
+
+.animate-golden-halo-primary {
+  animation: goldenHaloDiffusePrimary 1.25s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.animate-golden-halo-secondary {
+  animation: goldenHaloDiffuseSecondary 1.45s cubic-bezier(0.15, 0.75, 0.3, 1) 0.18s forwards;
+  will-change: transform, opacity;
+}
+
+.animate-golden-card-sweep {
+  animation: goldenCardSweep 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.animate-golden-sparkle {
+  animation: goldenSparkleOut 1.05s cubic-bezier(0.2, 0.8, 0.25, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Respect user preference for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-badge-unlock-scale,
+  .animate-badge-icon-ignite,
+  .animate-golden-halo-primary,
+  .animate-golden-halo-secondary,
+  .animate-golden-card-sweep,
+  .animate-golden-sparkle,
+  .anim-emoji-pop-once,
+  .msg-entry-anim,
+  .reaction-chip-pop,
+  .msg-highlight-target,
+  .send-bubble-feedback,
+  .telegram-emoji-animate,
+  .telegram-emoji-float,
+  .animate-fly-plane,
+  .anim-emoji-bubble-64,
+  .msg-bubble-entry-200,
+  .radiant-beacon-breathe-slow,
+  .radiant-ui-element-glow,
+  .animate-radiant-laser,
+  .animate-radiant-ring,
+  .animate-radiant-ring-fast,
+  .animate-radiant-ring-reverse,
+  .animate-radiant-sparkle-1,
+  .animate-radiant-sparkle-2,
+  .animate-radiant-sparkle-3,
+  .animate-radiant-radar {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* BadgeItem Unlocked Light-up Animation: Golden Halo Diffusion & Zoom */
+@keyframes badge-light-up {
+  0% {
+    transform: scale(0.92);
+    filter: brightness(0.9);
+  }
+  40% {
+    transform: scale(1.1);
+    filter: brightness(1.25);
+  }
+  75% {
+    transform: scale(1.02);
+    filter: brightness(1.08);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes badge-halo-diffuse {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.35);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+
+.badge-item-light-up {
+  animation: badge-light-up 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.badge-golden-halo {
+  animation: badge-halo-diffuse 1.4s ease-out forwards;
+}
+
+/* Map Initial Loading Mask Animations */
+@keyframes map-radar-pulse {
+  0% {
+    transform: scale(0.65);
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.45;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes map-shimmer-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(60%);
+  }
+  100% {
+    transform: translateX(250%);
+  }
+}
+
+@keyframes map-compass-sweep {
+  0%, 100% {
+    transform: rotate(-45deg);
+  }
+  30% {
+    transform: rotate(-15deg);
+  }
+  70% {
+    transform: rotate(-75deg);
+  }
+}
+
+.animate-map-radar {
+  animation: map-radar-pulse 2s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
+}
+
+.animate-map-radar-delayed {
+  animation: map-radar-pulse 2s cubic-bezier(0.2, 0.8, 0.4, 1) infinite 0.75s;
+}
+
+.animate-map-shimmer {
+  animation: map-shimmer-slide 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-map-compass {
+  animation: map-compass-sweep 3s ease-in-out infinite;
+}
+
+/* ========================================================================== */
+/* Stellar Single Emoji Echo Animation System (单表情放大回响动效)           */
+/* Timing: 420ms max, cubic-bezier(0.22, 0.8, 0.24, 1), 48-56px size          */
+/* ========================================================================== */
+
+@keyframes single-emoji-echo-standard {
+  0% {
+    transform: scale(0.72) translateY(-3px) rotate(0deg);
+    opacity: 0.25;
+  }
+  19% { /* ~80ms */
+    transform: scale(1.18) translateY(-6px) rotate(0deg);
+    opacity: 1;
+  }
+  43% { /* ~180ms */
+    transform: scale(0.96) translateY(-2px) rotate(-3deg);
+    opacity: 1;
+  }
+  71% { /* ~300ms */
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes single-emoji-echo-heart {
+  0% {
+    transform: scale(0.72) translateY(-3px);
+    opacity: 0.25;
+  }
+  19% { /* ~80ms */
+    transform: scale(1.18) translateY(-6px);
+    opacity: 1;
+  }
+  38% { /* ~160ms */
+    transform: scale(0.96) translateY(-2px);
+    opacity: 1;
+  }
+  55% { /* ~230ms */
+    transform: scale(1.12) translateY(-4px);
+    opacity: 1;
+  }
+  71% { /* ~300ms */
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes single-emoji-echo-thumbsup {
+  0% {
+    transform: scale(0.72) translateY(-2px);
+    opacity: 0.25;
+  }
+  19% { /* ~80ms */
+    transform: scale(1.18) translateY(-8px);
+    opacity: 1;
+  }
+  43% { /* ~180ms */
+    transform: scale(0.96) translateY(-3px);
+    opacity: 1;
+  }
+  71% { /* ~300ms */
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes single-emoji-echo-joy {
+  0% {
+    transform: scale(0.72) translateY(-3px) rotate(0deg);
+    opacity: 0.25;
+  }
+  19% { /* ~80ms */
+    transform: scale(1.18) translateY(-6px) rotate(6deg);
+    opacity: 1;
+  }
+  43% { /* ~180ms */
+    transform: scale(0.96) translateY(-2px) rotate(-6deg);
+    opacity: 1;
+  }
+  57% { /* ~240ms */
+    transform: scale(1.04) translateY(-1px) rotate(3deg);
+    opacity: 1;
+  }
+  71% { /* ~300ms */
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes single-emoji-echo-party {
+  0% {
+    transform: scale(0.72) translateY(-3px) rotate(-4deg);
+    opacity: 0.25;
+  }
+  19% { /* ~80ms */
+    transform: scale(1.18) translateY(-6px) rotate(4deg);
+    opacity: 1;
+  }
+  43% { /* ~180ms */
+    transform: scale(0.96) translateY(-2px) rotate(-2deg);
+    opacity: 1;
+  }
+  71% { /* ~300ms */
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes single-emoji-echo-fire {
+  0% {
+    transform: scale(0.72) translateY(-3px);
+    filter: brightness(1);
+    opacity: 0.25;
+  }
+  19% { /* ~80ms */
+    transform: scale(1.18) translateY(-6px);
+    filter: brightness(1.22);
+    opacity: 1;
+  }
+  38% { /* ~160ms */
+    transform: scale(0.96) translateY(-2px);
+    filter: brightness(0.96);
+    opacity: 1;
+  }
+  57% { /* ~240ms */
+    transform: scale(1.08) translateY(-3px);
+    filter: brightness(1.18);
+    opacity: 1;
+  }
+  71% { /* ~300ms */
+    transform: scale(1) translateY(0);
+    filter: brightness(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    filter: brightness(1);
+    opacity: 1;
+  }
+}
+
+@keyframes single-emoji-echo-star {
+  0% {
+    transform: scale(0.72) translateY(-3px);
+    opacity: 0.25;
+  }
+  19% { /* ~80ms */
+    transform: scale(1.18) translateY(-8px) rotate(8deg);
+    opacity: 1;
+  }
+  43% { /* ~180ms */
+    transform: scale(0.96) translateY(-4px) rotate(-4deg);
+    opacity: 1;
+  }
+  71% { /* ~300ms */
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes single-emoji-echo-reduced {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes single-emoji-sparkle-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.2) translate(0, 0);
+  }
+  40% {
+    opacity: 0.95;
+    transform: scale(1.1) translate(var(--tw-sparkle-x, 0), var(--tw-sparkle-y, 0));
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.4) translate(calc(var(--tw-sparkle-x, 0) * 1.3), calc(var(--tw-sparkle-y, 0) * 1.3));
+  }
+}
+
+.anim-single-emoji-standard {
+  animation: single-emoji-echo-standard 440ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.anim-single-emoji-heart {
+  animation: single-emoji-echo-heart 440ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.anim-single-emoji-thumbsup {
+  animation: single-emoji-echo-thumbsup 440ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.anim-single-emoji-joy {
+  animation: single-emoji-echo-joy 440ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.anim-single-emoji-party {
+  animation: single-emoji-echo-party 440ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.anim-single-emoji-fire {
+  animation: single-emoji-echo-fire 440ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity, filter;
+}
+
+.anim-single-emoji-star {
+  animation: single-emoji-echo-star 440ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.anim-single-emoji-reduced {
+  animation: single-emoji-echo-reduced 140ms ease-out forwards;
+}
+
+.anim-single-emoji-sparkle {
+  animation: single-emoji-sparkle-burst 140ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* High-Tactility Emoji Tap Spring (Mobile App Touch Physics) */
+.emoji-tap-spring {
+  transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+}
+.emoji-tap-spring:active {
+  transform: scale(0.72) translateY(2px) !important;
+  transition: transform 0.08s ease-out;
+}
+
+@keyframes emoji-emit-spring {
+  0% {
+    transform: scale(0.35) translateY(4px);
+    opacity: 0.2;
+  }
+  45% {
+    transform: scale(1.36) translateY(-8px);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.92) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.anim-emoji-emit-pop {
+  animation: emoji-emit-spring 460ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-single-emoji-standard,
+  .anim-single-emoji-heart,
+  .anim-single-emoji-thumbsup,
+  .anim-single-emoji-joy,
+  .anim-single-emoji-party,
+  .anim-single-emoji-fire,
+  .anim-single-emoji-star {
+    animation: single-emoji-echo-reduced 140ms ease-out forwards !important;
+  }
+  .anim-single-emoji-sparkle {
+    display: none !important;
+  }
+}
+
+
+
+
+
+
+
+
+
